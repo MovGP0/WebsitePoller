@@ -21,6 +21,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(ITownCrier))]
         [TestCase(typeof(IClock))]
         [TestCase(typeof(ITownCrierFactory))]
+        [TestCase(typeof(ISettingsLoader))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -46,6 +47,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(ITownCrier), typeof(TownCrier))]
         [TestCase(typeof(IClock), typeof(SystemClock))]
         [TestCase(typeof(ITownCrierFactory), typeof(TownCrierFactory))]
+        [TestCase(typeof(ISettingsLoader), typeof(SettingsLoader))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;

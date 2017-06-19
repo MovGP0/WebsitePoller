@@ -5,17 +5,19 @@ namespace WebsitePoller
     public class IntervallCalculator : IIntervallCalculator
     {
         private IClock SystemClock { get; }
+        private Settings Settings { get; }
 
-        public IntervallCalculator(IClock systemClock)
+        public IntervallCalculator(IClock systemClock, Settings settings)
         {
             SystemClock = systemClock;
+            Settings = settings;
         }
 
         public Duration CalculateDurationTillIntervall()
         {
-            var currentTime = GetCurrentTime("Europe/Vienna");
-            var minTime = new LocalTime(21, 00);
-            var maxTime = new LocalTime(23, 00);
+            var currentTime = GetCurrentTime(Settings.TimeZone);
+            var minTime = Settings.From;
+            var maxTime = Settings.Till;
 
             if (currentTime > minTime && currentTime < maxTime)
             {

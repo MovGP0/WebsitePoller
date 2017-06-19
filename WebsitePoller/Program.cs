@@ -24,11 +24,16 @@ namespace WebsitePoller
             Serilog.Log.Logger = SetupLogger();
 
             // Dependency Injection
+            var resolver = SetupDependencyResolver();
             ITownCrier TownCrierFactory()
             {
-                var factory = SetupDependencyResolver().Resolve<ITownCrierFactory>();
+                var factory = resolver.Resolve<ITownCrierFactory>();
                 return factory.Invoke();
             }
+
+            // Settings
+            var settingsLoader = resolver.Resolve<ISettingsLoader>();
+            settingsLoader.UpdateSettings();
 
             HostFactory.Run(config =>
             {

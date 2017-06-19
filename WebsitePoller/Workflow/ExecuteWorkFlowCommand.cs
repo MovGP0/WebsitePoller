@@ -1,24 +1,40 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebsitePoller.Workflow
 {
+    public static class AssemblyExtensions
+    {
+        public static string GetDirectoryPath(this Assembly assembly)
+        {
+            var filePath = new Uri(assembly.CodeBase).LocalPath;
+            return Path.GetDirectoryName(filePath);
+        }
+    }
+
     public sealed class ExecuteWorkFlowCommand : IExecuteWorkFlowCommand
     {
         private IWebsiteDownloader WebsiteDownloader { get; }
         private IFileContentComparer FileContentComparer { get; }
         private INotifier Notifier { get; }
+        private Settings Settings { get; }
+        private ISettingsLoader SettingsLoader { get; }
 
         public ExecuteWorkFlowCommand(
             IWebsiteDownloader websiteDownloader, 
             IFileContentComparer fileContentComparer, 
-            INotifier notifier)
+            INotifier notifier, 
+            Settings settings, 
+            ISettingsLoader settingsLoader)
         {
             WebsiteDownloader = websiteDownloader;
             FileContentComparer = fileContentComparer;
             Notifier = notifier;
+            Settings = settings;
+            SettingsLoader = settingsLoader;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -40,16 +56,17 @@ namespace WebsitePoller.Workflow
 
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var uri = new Uri("http://m.sozialbau.at/wohnungen/altbau/");
             var targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "altbau.xhtml");
             var cachedFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "altbau.copy.xhtml");
-            
-            await DownloadWebpage(uri, targetPath, cancellationToken);
+
+            SettingsLoader.UpdateSettings();
+
+            await DownloadWebpage(Settings.Url, targetPath, cancellationToken);
             if (!File.Exists(targetPath)) return;
 
             if (File.Exists(cachedFilePath))
             {
-                ShowNotificationIfWebsitesDiffer(targetPath, cachedFilePath, "Website has changed", uri);
+                ShowNotificationIfWebsitesDiffer(targetPath, cachedFilePath, "Website has changed", Settings.Url);
                 File.Delete(cachedFilePath);
             }
             

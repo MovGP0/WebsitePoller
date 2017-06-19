@@ -1,0 +1,15 @@
+﻿{
+  // The URL to download.
+  "url": "http://m.sozialbau.at/wohnungen/altbau/",
+
+  // The IANA name of the timezone for the timeframe.
+  // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a full list.
+  // WARNING: the application might crash when not set to a proper timezone. 
+  "timezone": "Europe/Vienna",
+
+  // The timeframe when to poll the site.
+  // Must be in the format 'hh', 'hh:mm', or 'hh:mm:ss'. Single digits are allowed too.
+  // Values must be in the range from 00:00:00 till 23:59:59. 
+  "from": "21:00",
+  "till": "23:00"
+}
