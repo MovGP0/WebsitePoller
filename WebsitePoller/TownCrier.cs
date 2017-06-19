@@ -65,7 +65,7 @@ namespace WebsitePoller
         private void StartTimer()
         {
             var timeTillMinTime = IntervallCalculator.CalculateDurationTillIntervall();
-            var timeInMilliseconds = SetMinimumDurationOfOneMinuteWhenZero(timeTillMinTime).Milliseconds;
+            var timeInMilliseconds = SetMinimumDurationOfOneMinuteWhenZero(timeTillMinTime).TotalMilliseconds;
 
             _timer = new Timer
             {
