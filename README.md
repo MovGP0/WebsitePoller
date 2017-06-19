@@ -24,7 +24,7 @@ In order to start the service without installing it, open a new console. Then yo
 ## Installation 
 In order to install the service, you need to open a new console with admin rights. Then you execute the following command: 
 ```powershell
-./WebsitePoller.exe install
+./WebsitePoller.exe install -username './username' -password 'secretpassword'
 ```
 Installing the service has some benefits, since the service will automatically start and run in background when the computer starts. 
 
