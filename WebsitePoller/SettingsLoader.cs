@@ -34,7 +34,7 @@ namespace WebsitePoller
             Settings.TimeZone = settings.TimeZone;
             Settings.Url = settings.Url;
         }
-        
+
         private static ILogger Log => Serilog.Log.ForContext<SettingsLoader>();
 
         public Settings Load(string path)
@@ -55,13 +55,7 @@ namespace WebsitePoller
 
         private static string ParseString(JsonObject jsonObject, string valueName, string @default)
         {
-            if (jsonObject.TryGetValue(valueName, out JsonValue timezone))
-            {
-                return timezone.ToString(Stringify.Plain);
-            }
-
-            Log.Information($"Setting '{valueName}' was not found in settings file.");
-            return @default;
+            return jsonObject.Qs(valueName, @default);
         }
 
         private static LocalTime ParseLocalTime(JsonObject jsonObject, string valueName, LocalTime @default)
@@ -83,41 +77,37 @@ namespace WebsitePoller
 
         private static Uri ParseUrl(JsonObject jsonObject, string valueName, Uri @default)
         {
-            if(jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
-            if(string.IsNullOrWhiteSpace(valueName)) throw new ArgumentException("Must not be empty.", nameof(valueName));
+            if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
+            if (string.IsNullOrWhiteSpace(valueName)) throw new ArgumentException("Must not be empty.", nameof(valueName));
 
-            if (jsonObject.TryGetValue(valueName, out JsonValue jsonValue))
+            var jsonValue = jsonObject.Qs(valueName, @default.ToString());
+
+            if (TryConvertToUri(jsonValue, out Uri uri))
             {
-                if (TryConvertToUri(jsonValue, out Uri uri))
-                {
-                    return uri;
-                }
-
-                Log.Error($"Could not parse value of '{valueName}' from settings file.");
-                return @default;
+                return uri;
             }
 
-            Log.Information($"Setting '{valueName}' was not found in settings file.");
+            Log.Error($"Could not parse value of '{valueName}' from settings file.");
             return @default;
         }
 
-        private static bool TryConvertToUri(JsonValue value, out Uri uri)
+        private static bool TryConvertToUri(string value, out Uri uri)
         {
             try
             {
-                var urlString = value.ToString(Stringify.Plain);
-                if (string.IsNullOrWhiteSpace(urlString))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    uri = new Uri("");
+                    uri = null;
                     return false;
                 }
 
-                uri = new Uri(urlString);
+                uri = new Uri(value);
                 return true;
             }
-            catch
+            catch(Exception e)
             {
-                uri = new Uri("");
+                Log.Error(e, e.Message);
+                uri = null;
                 return false;
             }
         }

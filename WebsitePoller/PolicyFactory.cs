@@ -17,7 +17,7 @@ namespace WebsitePoller
             var timeout = Policy.TimeoutAsync(TimeSpan.FromSeconds(30));
             var bulkhead = Policy.BulkheadAsync(1);
 
-            return Policy.Wrap(retry, breaker, timeout, bulkhead);
+            return Policy.WrapAsync(retry, breaker, timeout, bulkhead);
         }
     }
 }
