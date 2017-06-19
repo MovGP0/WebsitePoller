@@ -19,6 +19,8 @@ namespace WebsitePoller
 
         private static void Main()
         {
+            Console.ReadLine();
+
             // Logging
             Serilog.Log.Logger = SetupLogger();
 

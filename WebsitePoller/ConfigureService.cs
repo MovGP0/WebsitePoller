@@ -10,15 +10,15 @@ namespace WebsitePoller
         [NotNull]
         private static ILogger Log => Serilog.Log.ForContext(typeof(ConfigureService));
 
-        public static void Configure(string ServiceName, string MachineName, string LogName, Func<ITownCrier> TownCrierFactory)
+        public static void Configure(string serviceName, string machineName, string logName, Func<ITownCrier> townCrierFactory)
         {
             HostFactory.Run(config =>
             {
                 config.SetDescription("Background service that polls websites for changes in the background.");
                 config.SetDisplayName("Website Poller");
-                config.SetServiceName(ServiceName);
-                config.ConfigureTownCrierService(TownCrierFactory);
-                config.ConfigureLogging(ServiceName, MachineName, LogName);
+                config.SetServiceName(serviceName);
+                config.ConfigureTownCrierService(townCrierFactory);
+                config.ConfigureLogging(serviceName, machineName, logName);
                 config.OnException(e =>
                 {
                     Log.Error(e, e.Message);
