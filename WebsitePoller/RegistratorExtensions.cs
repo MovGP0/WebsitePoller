@@ -16,6 +16,11 @@ namespace WebsitePoller
             registrator.Register<ITownCrierFactory, TownCrierFactory>();
             registrator.RegisterDelegate<Func<ITownCrier>>(r => () => r.Resolve<ITownCrier>());
             registrator.Register<IExecuteWorkFlowCommand, ExecuteWorkFlowCommand>();
+            registrator.Register<ISettingsLoader, SettingsLoader>();
+            registrator.Register<IWebsiteDownloader, WebsiteDownloader>();
+            registrator.Register<Settings>(Reuse.Singleton);
+            registrator.Register<IFileContentComparer, FileContentComparer>();
+            registrator.Register<INotifier, Notifier>();
             return registrator;
         }
     }

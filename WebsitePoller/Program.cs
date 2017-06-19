@@ -3,7 +3,6 @@ using DryIoc;
 using JetBrains.Annotations;
 using Serilog;
 using Serilog.Events;
-using Topshelf;
 
 namespace WebsitePoller
 {
@@ -34,20 +33,8 @@ namespace WebsitePoller
             // Settings
             var settingsLoader = resolver.Resolve<ISettingsLoader>();
             settingsLoader.UpdateSettings();
-
-            HostFactory.Run(config =>
-            {
-                config.SetDescription("Backgronud service that polls websites for changes in the background.");
-                config.SetDisplayName("Website Poller");
-                config.SetServiceName(ServiceName);
-                
-                config.ConfigureTownCrierService(TownCrierFactory);
-                config.ConfigureLogging(ServiceName, MachineName, LogName);
-                config.OnException(e =>
-                {
-                    Log.Error(e, e.Message);
-                });
-            });
+            
+            ConfigureService.Configure(ServiceName, LogName, MachineName, TownCrierFactory);
         }
 
         [NotNull]

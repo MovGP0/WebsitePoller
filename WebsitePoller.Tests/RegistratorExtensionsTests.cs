@@ -2,6 +2,7 @@
 using DryIoc;
 using NodaTime;
 using NUnit.Framework;
+using WebsitePoller.Workflow;
 
 namespace WebsitePoller.Tests
 {
@@ -22,6 +23,10 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IClock))]
         [TestCase(typeof(ITownCrierFactory))]
         [TestCase(typeof(ISettingsLoader))]
+        [TestCase(typeof(Settings))]
+        [TestCase(typeof(IExecuteWorkFlowCommand))]
+        [TestCase(typeof(IFileContentComparer))]
+        [TestCase(typeof(INotifier))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -48,6 +53,10 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IClock), typeof(SystemClock))]
         [TestCase(typeof(ITownCrierFactory), typeof(TownCrierFactory))]
         [TestCase(typeof(ISettingsLoader), typeof(SettingsLoader))]
+        [TestCase(typeof(IWebsiteDownloader), typeof(WebsiteDownloader))]
+        [TestCase(typeof(IExecuteWorkFlowCommand), typeof(ExecuteWorkFlowCommand))]
+        [TestCase(typeof(IFileContentComparer), typeof(FileContentComparer))]
+        [TestCase(typeof(INotifier), typeof(Notifier))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;
