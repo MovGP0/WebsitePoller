@@ -56,7 +56,7 @@ namespace WebsitePoller
                 });
             });
 
-            config.RunAsLocalService();
+            config.RunAsLocalSystem();
             config.StartAutomatically();
 
         }
