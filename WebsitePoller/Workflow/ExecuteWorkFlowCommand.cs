@@ -1,22 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace WebsitePoller.Workflow
 {
-    public static class AssemblyExtensions
-    {
-        public static string GetDirectoryPath(this Assembly assembly)
-        {
-            var filePath = new Uri(assembly.CodeBase).LocalPath;
-            return Path.GetDirectoryName(filePath);
-        }
-    }
-
     public sealed class ExecuteWorkFlowCommand : IExecuteWorkFlowCommand
     {
+        private static ILogger Log => Serilog.Log.ForContext<ExecuteWorkFlowCommand>();
+
         private IWebsiteDownloader WebsiteDownloader { get; }
         private IFileContentComparer FileContentComparer { get; }
         private INotifier Notifier { get; }
@@ -81,8 +74,13 @@ namespace WebsitePoller.Workflow
         private void ShowNotificationIfWebsitesDiffer(string targetPath, string cachedFilePath, string message, Uri uri)
         {
             var areEqual = FileContentComparer.Equals(targetPath, cachedFilePath);
-            if (areEqual) return;
+            if (areEqual)
+            {
+                Log.Verbose("Website has not changed");
+                return;
+            }
 
+            Log.Verbose("Inform user that site has changed");
             Notifier.Notify(message, uri);
         }
     }

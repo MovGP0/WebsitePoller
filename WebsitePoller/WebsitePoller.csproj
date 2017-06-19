@@ -84,6 +84,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="ConfigureService.cs" />
     <Compile Include="SettingsLoader.cs" />
+    <Compile Include="Workflow\AssemblyExtensions.cs" />
     <Compile Include="Workflow\ExecuteWorkFlowCommand.cs" />
     <Compile Include="HostConfiguratorLoggingExtensions.cs" />
     <Compile Include="HostConfiguratorTownCrierExtensions.cs" />

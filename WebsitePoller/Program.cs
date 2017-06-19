@@ -42,7 +42,7 @@ namespace WebsitePoller
         {
             return new LoggerConfiguration()
                 .WriteTo.EventLog(ServiceName, LogName, MachineName, false, restrictedToMinimumLevel: LogEventLevel.Warning)
-                .WriteTo.LiterateConsole(LogEventLevel.Information)
+                .WriteTo.LiterateConsole(LogEventLevel.Verbose)
                 .CreateLogger();
         }
 

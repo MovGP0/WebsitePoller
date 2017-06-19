@@ -24,7 +24,7 @@ namespace WebsitePoller.Workflow
             var policy = PolicyFactory.CreateDownloadWebsitePolicy();
             try
             {
-                Log.Information($"Downloading {url}");
+                Log.Verbose($"Downloading {url}");
                 await policy.ExecuteAsync(token => DownloadWebsiteAsync(url, targetPath, token), cancellationToken);
             }
             catch(Exception e)
