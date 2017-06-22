@@ -22,14 +22,12 @@ namespace WebsitePoller.Workflow
         [NotNull]
         private IPolicyFactory PolicyFactory { get; }
 
-        public async Task<HtmlDocument> GetWebsiteOrNullWithPolicyAsync(Uri url, string targetPath, CancellationToken cancellationToken)
+        public async Task<HtmlDocument> GetWebsiteOrNullWithPolicyAndLoggingAsync(Uri url, string targetPath, CancellationToken cancellationToken)
         {
-            var policy = PolicyFactory.CreateDownloadWebsitePolicy();
             try
             {
                 Log.Verbose($"Downloading {url}");
-                var document = await policy.ExecuteAsync(token => GetWebsiteOrNullAsync(url, token), cancellationToken);
-                return document;
+                return await GetWebsiteOrNullWithPolicyAsync(url, cancellationToken);
             }
             catch(Exception e)
             {
@@ -37,8 +35,14 @@ namespace WebsitePoller.Workflow
                 return null;
             }
         }
-        
-        private static async Task<HtmlDocument> GetWebsiteOrNullAsync(Uri url, CancellationToken cancellationToken)
+
+        public async Task<HtmlDocument> GetWebsiteOrNullWithPolicyAsync(Uri url, CancellationToken cancellationToken)
+        {
+            var policy = PolicyFactory.CreateDownloadWebsitePolicy();
+            return await policy.ExecuteAsync(token => GetWebsiteOrNullAsync(url, token), cancellationToken);
+        }
+
+        public async Task<HtmlDocument> GetWebsiteOrNullAsync(Uri url, CancellationToken cancellationToken)
         {
             var resource = url.PathAndQuery;
             var domain = url.GetDomain();
@@ -56,14 +60,6 @@ namespace WebsitePoller.Workflow
             var document = new HtmlDocument();
             document.LoadHtml(response.Content);
             return document;
-        }
-    }
-
-    public static class UriExtensions
-    {
-        public static Uri GetDomain(this Uri url)
-        {
-            return new Uri($"{url.Scheme}://{url.DnsSafeHost}:{url.Port}", UriKind.Absolute);
         }
     }
 }

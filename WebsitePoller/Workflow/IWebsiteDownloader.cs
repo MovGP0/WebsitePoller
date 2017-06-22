@@ -7,6 +7,8 @@ namespace WebsitePoller.Workflow
 {
     public interface IWebsiteDownloader
     {
-        Task<HtmlDocument> GetWebsiteOrNullWithPolicyAsync(Uri url, string targetPath, CancellationToken cancellationToken);
+        Task<HtmlDocument> GetWebsiteOrNullWithPolicyAndLoggingAsync(Uri url, string targetPath, CancellationToken cancellationToken);
+        Task<HtmlDocument> GetWebsiteOrNullWithPolicyAsync(Uri url, CancellationToken cancellationToken);
+        Task<HtmlDocument> GetWebsiteOrNullAsync(Uri url, CancellationToken cancellationToken);
     }
 }
