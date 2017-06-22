@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Serilog;
 
 namespace WebsitePoller.Workflow
@@ -54,8 +55,11 @@ namespace WebsitePoller.Workflow
 
             SettingsLoader.UpdateSettings();
 
-            await DownloadWebpage(Settings.Url, targetPath, cancellationToken);
-            if (!File.Exists(targetPath)) return;
+            var webpage = await GetWebpageOrNull(Settings.Url, targetPath, cancellationToken);
+            if (webpage == null) return;
+
+            if(File.Exists(targetPath)) File.Delete(targetPath); 
+            webpage.Save(targetPath);
 
             if (File.Exists(cachedFilePath))
             {
@@ -66,9 +70,9 @@ namespace WebsitePoller.Workflow
             File.Move(targetPath, cachedFilePath);
         }
 
-        private async Task DownloadWebpage(Uri uri, string targetPath, CancellationToken cancellationToken)
+        private async Task<HtmlDocument> GetWebpageOrNull(Uri uri, string targetPath, CancellationToken cancellationToken)
         {
-            await WebsiteDownloader.TryDownloadWebsiteWithPolicyAsync(uri, targetPath, cancellationToken);
+            return await WebsiteDownloader.GetWebsiteOrNullWithPolicyAsync(uri, targetPath, cancellationToken);
         }
 
         private void ShowNotificationIfWebsitesDiffer(string targetPath, string cachedFilePath, string message, Uri uri)
@@ -80,7 +84,7 @@ namespace WebsitePoller.Workflow
                 return;
             }
 
-            Log.Verbose("Inform user that site has changed");
+            Log.Verbose("Informing user that site has changed");
             Notifier.Notify(message, uri);
         }
     }

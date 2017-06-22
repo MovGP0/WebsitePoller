@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace WebsitePoller.Workflow
 {
     public interface IWebsiteDownloader
     {
-        Task TryDownloadWebsiteWithPolicyAsync(Uri url, string targetPath, CancellationToken cancellationToken);
+        Task<HtmlDocument> GetWebsiteOrNullWithPolicyAsync(Uri url, string targetPath, CancellationToken cancellationToken);
     }
 }
