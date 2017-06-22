@@ -3,6 +3,7 @@ using System.Timers;
 using JetBrains.Annotations;
 using NodaTime;
 using Serilog;
+using WebsitePoller.Settings;
 
 namespace WebsitePoller
 {
@@ -25,10 +26,14 @@ namespace WebsitePoller
 
         [NotNull]
         private IIntervallCalculator IntervallCalculator { get; }
-        
-        public TownCrier([NotNull]IIntervallCalculator intervallCalculator)
+
+        [NotNull]
+        private SettingsManager SettingsManager { get; set; }
+
+        public TownCrier([NotNull]IIntervallCalculator intervallCalculator, [NotNull] SettingsManager settingsManager)
         {
             IntervallCalculator = intervallCalculator;
+            SettingsManager = settingsManager;
         }
 
         ~TownCrier()
@@ -65,7 +70,7 @@ namespace WebsitePoller
         private void StartTimer()
         {
             var timeTillMinTime = IntervallCalculator.CalculateDurationTillIntervall();
-            var timeInMilliseconds = SetMinimumDurationOfOneMinuteWhenZero(timeTillMinTime).TotalMilliseconds;
+            var timeInMilliseconds = SetMinimumDurationWhenZero(timeTillMinTime).TotalMilliseconds;
 
             _timer = new Timer
             {
@@ -76,10 +81,10 @@ namespace WebsitePoller
             _timer.Start();
         }
 
-        private static Duration SetMinimumDurationOfOneMinuteWhenZero(Duration timeTillMinTime)
+        private Duration SetMinimumDurationWhenZero(Duration timeTillMinTime)
         {
             return timeTillMinTime == Duration.Zero
-                ? Duration.FromMinutes(1)
+                ? Duration.FromSeconds(SettingsManager.Settings.PollingIntervallInSeconds)
                 : timeTillMinTime;
         }
 

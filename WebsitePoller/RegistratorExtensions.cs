@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
 using DryIoc;
+using HtmlAgilityPack;
 using NodaTime;
+using WebsitePoller.Settings;
 using WebsitePoller.Workflow;
 
 namespace WebsitePoller
@@ -18,9 +22,20 @@ namespace WebsitePoller
             registrator.Register<IExecuteWorkFlowCommand, ExecuteWorkFlowCommand>();
             registrator.Register<ISettingsLoader, SettingsLoader>();
             registrator.Register<IWebsiteDownloader, WebsiteDownloader>();
-            registrator.Register<Settings>(Reuse.Singleton);
+            registrator.Register<SettingsManager>(Reuse.Singleton);
             registrator.Register<IFileContentComparer, FileContentComparer>();
             registrator.Register<INotifier, Notifier>();
+            registrator.Register<IEqualityComparer<HtmlDocument>, HtmlDocumentComparer>();
+            return registrator;
+        }
+
+        public static IRegistrator SetupMappings(this IRegistrator registrator)
+        {
+            registrator.RegisterDelegate(r => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            }));
+            registrator.RegisterDelegate<IMapper>(r => new Mapper(r.Resolve<MapperConfiguration>()), Reuse.Singleton);
             return registrator;
         }
     }

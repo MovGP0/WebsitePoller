@@ -2,7 +2,11 @@
 using DryIoc;
 using NodaTime;
 using NUnit.Framework;
+using WebsitePoller.Settings;
 using WebsitePoller.Workflow;
+using System.Collections.Generic;
+using AutoMapper;
+using HtmlAgilityPack;
 
 namespace WebsitePoller.Tests
 {
@@ -17,23 +21,33 @@ namespace WebsitePoller.Tests
         }
 
         [Test]
+        public void SetupMappingsShouldNotThrowAnException()
+        {
+            var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
+            Assert.That(container.SetupDependencies, Throws.Nothing);
+        }
+
+        [Test]
         [TestCase(typeof(IPolicyFactory))]
         [TestCase(typeof(IIntervallCalculator))]
         [TestCase(typeof(ITownCrier))]
         [TestCase(typeof(IClock))]
         [TestCase(typeof(ITownCrierFactory))]
         [TestCase(typeof(ISettingsLoader))]
-        [TestCase(typeof(Settings))]
+        [TestCase(typeof(SettingsManager))]
         [TestCase(typeof(IExecuteWorkFlowCommand))]
         [TestCase(typeof(IFileContentComparer))]
         [TestCase(typeof(INotifier))]
+        [TestCase(typeof(IEqualityComparer<HtmlDocument>))]
+        [TestCase(typeof(MapperConfiguration))]
+        [TestCase(typeof(IMapper))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
             try
             {
                 var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-                container.SetupDependencies();
+                container.SetupDependencies().SetupMappings();
                 registrator = container;
             }
             catch (Exception)
@@ -57,6 +71,8 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IExecuteWorkFlowCommand), typeof(ExecuteWorkFlowCommand))]
         [TestCase(typeof(IFileContentComparer), typeof(FileContentComparer))]
         [TestCase(typeof(INotifier), typeof(Notifier))]
+        [TestCase(typeof(IMapper), typeof(Mapper))]
+        [TestCase(typeof(MapperConfiguration), typeof(MapperConfiguration))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;
@@ -64,7 +80,7 @@ namespace WebsitePoller.Tests
             try
             {
                 var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-                container.SetupDependencies();
+                container.SetupDependencies().SetupMappings(); 
                 resolver = container;
             }
             catch (Exception)

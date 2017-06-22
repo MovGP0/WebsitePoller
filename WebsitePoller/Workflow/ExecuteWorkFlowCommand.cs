@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Serilog;
+using WebsitePoller.Settings;
 
 namespace WebsitePoller.Workflow
 {
@@ -15,20 +16,20 @@ namespace WebsitePoller.Workflow
         private IWebsiteDownloader WebsiteDownloader { get; }
         private IEqualityComparer<HtmlDocument> HtmlDocumentComparer { get; }
         private INotifier Notifier { get; }
-        private Settings Settings { get; }
+        private SettingsManager SettingsManager { get; }
         private ISettingsLoader SettingsLoader { get; }
 
         public ExecuteWorkFlowCommand(
             IWebsiteDownloader websiteDownloader,
             IEqualityComparer<HtmlDocument> htmlDocumentComparer, 
-            INotifier notifier, 
-            Settings settings, 
+            INotifier notifier,
+            SettingsManager settingsManager, 
             ISettingsLoader settingsLoader)
         {
             WebsiteDownloader = websiteDownloader;
             HtmlDocumentComparer = htmlDocumentComparer;
             Notifier = notifier;
-            Settings = settings;
+            SettingsManager = settingsManager;
             SettingsLoader = settingsLoader;
         }
 
@@ -51,18 +52,20 @@ namespace WebsitePoller.Workflow
 
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            var url = SettingsManager.Settings.Url;
+
             var targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "altbau.xhtml");
             
             SettingsLoader.UpdateSettings();
 
-            var webpage = await WebsiteDownloader.GetWebsiteOrNullWithPolicyAndLoggingAsync(Settings.Url, targetPath, cancellationToken);
+            var webpage = await WebsiteDownloader.GetWebsiteOrNullWithPolicyAndLoggingAsync(url, targetPath, cancellationToken);
             if (webpage == null) return;
             
             if (File.Exists(targetPath))
             {
                 var cachedWebpage = await HtmlDocumentFactory.FromFileAsync(targetPath, cancellationToken);
                 
-                ShowNotificationIfWebsitesDiffer(webpage, cachedWebpage, "Website has changed", Settings.Url);
+                ShowNotificationIfWebsitesDiffer(webpage, cachedWebpage, "Website has changed", url);
                 File.Delete(targetPath);
             }
             

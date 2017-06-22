@@ -1,23 +1,25 @@
 ﻿using NodaTime;
+using WebsitePoller.Settings;
 
 namespace WebsitePoller
 {
     public class IntervallCalculator : IIntervallCalculator
     {
         private IClock SystemClock { get; }
-        private Settings Settings { get; }
+        private SettingsManager SettingsManager { get; }
 
-        public IntervallCalculator(IClock systemClock, Settings settings)
+        public IntervallCalculator(IClock systemClock, SettingsManager settingsManager)
         {
             SystemClock = systemClock;
-            Settings = settings;
+            SettingsManager = settingsManager;
         }
 
         public Duration CalculateDurationTillIntervall()
         {
-            var currentTime = GetCurrentTime(Settings.TimeZone);
-            var minTime = Settings.From;
-            var maxTime = Settings.Till;
+            var settings = SettingsManager.Settings;
+            var currentTime = GetCurrentTime(settings.TimeZone);
+            var minTime = settings.From;
+            var maxTime = settings.Till;
 
             if (currentTime > minTime && currentTime < maxTime)
             {

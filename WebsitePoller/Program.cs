@@ -3,6 +3,7 @@ using DryIoc;
 using JetBrains.Annotations;
 using Serilog;
 using Serilog.Events;
+using WebsitePoller.Settings;
 
 namespace WebsitePoller
 {
@@ -42,16 +43,16 @@ namespace WebsitePoller
         {
             return new LoggerConfiguration()
                 .WriteTo.EventLog(ServiceName, LogName, MachineName, false, restrictedToMinimumLevel: LogEventLevel.Warning)
-                .WriteTo.LiterateConsole(LogEventLevel.Verbose)
+                .WriteTo.LiterateConsole()
                 .CreateLogger();
         }
 
         [NotNull]
         private static IResolver SetupDependencyResolver()
         {
-            var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-            container.SetupDependencies();
-            return container;
+            return (Container)new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient())
+                .SetupDependencies()
+                .SetupMappings();
         }
     }
 }
