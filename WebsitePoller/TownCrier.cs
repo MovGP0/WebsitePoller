@@ -28,7 +28,7 @@ namespace WebsitePoller
         private IIntervallCalculator IntervallCalculator { get; }
 
         [NotNull]
-        private SettingsManager SettingsManager { get; set; }
+        private SettingsManager SettingsManager { get; }
 
         public TownCrier([NotNull]IIntervallCalculator intervallCalculator, [NotNull] SettingsManager settingsManager)
         {
