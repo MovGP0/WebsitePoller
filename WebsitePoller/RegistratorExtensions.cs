@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using AutoMapper;
 using DryIoc;
 using HtmlAgilityPack;
 using NodaTime;
+using RestSharp;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 using WebsitePoller.Workflow;
@@ -28,6 +30,7 @@ namespace WebsitePoller
             registrator.Register<INotifier, Notifier>();
             registrator.Register<IEqualityComparer<HtmlDocument>, HtmlDocumentComparer>();
             registrator.Register<IAltbauWohnungenParser, AltbauWohnungenParser>();
+            registrator.RegisterDelegate<Func<Uri, IRestClient>>(r => uri => new RestClient(uri){ Encoding = Encoding.UTF8 });
             return registrator;
         }
 

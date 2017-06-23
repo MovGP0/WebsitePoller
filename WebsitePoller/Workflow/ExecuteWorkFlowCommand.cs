@@ -42,7 +42,7 @@ namespace WebsitePoller.Workflow
 
         public void Execute(object parameter)
         {
-            var timeout = TimeSpan.FromMinutes(1);
+            var timeout = TimeSpan.FromMinutes(5);
             using (var source = new CancellationTokenSource(timeout))
             {
                 var token = source.Token;

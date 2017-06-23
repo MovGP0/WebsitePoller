@@ -100,16 +100,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormRegistrator\FormRegistrator.cs" />
+    <Compile Include="FormRegistrator\IFormRegistrator.cs" />
+    <Compile Include="FormRegistrator\PostalAddressExtensions.cs" />
     <Compile Include="LocalTimeConverter.cs" />
     <Compile Include="MappingProfile.cs" />
     <Compile Include="Parser\AltbauWohnungInfo.cs" />
     <Compile Include="Parser\AltbauWohnungInfoEqualityComparer.cs" />
     <Compile Include="Parser\IAltbauWohnungenParser.cs" />
     <Compile Include="Parser\SerializationInfoExtensions.cs" />
-    <Compile Include="Parser\StringBuilderExtensions.cs" />
+    <Compile Include="FormRegistrator\StringBuilderExtensions.cs" />
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\ISettingsLoader.cs" />
-    <Compile Include="PostalAddress.cs" />
+    <Compile Include="Setting\PostalAddress.cs" />
     <Compile Include="Setting\Settings.cs" />
     <Compile Include="ConfigureService.cs" />
     <Compile Include="Setting\SettingsBase.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebsitePoller
+namespace WebsitePoller.Setting
 {
     public sealed class PostalAddress
     {

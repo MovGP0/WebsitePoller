@@ -6,6 +6,7 @@ using WebsitePoller.Workflow;
 using System.Collections.Generic;
 using AutoMapper;
 using HtmlAgilityPack;
+using RestSharp;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
@@ -43,6 +44,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(MapperConfiguration))]
         [TestCase(typeof(IMapper))]
         [TestCase(typeof(IAltbauWohnungenParser))]
+        [TestCase(typeof(Func<Uri, IRestClient>))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;

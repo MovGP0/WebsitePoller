@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -14,13 +13,19 @@ namespace WebsitePoller.Workflow
     {
         private static ILogger Log => Serilog.Log.ForContext<WebsiteDownloader>();
 
-        public WebsiteDownloader([NotNull]IPolicyFactory policyFactory)
-        {
-            PolicyFactory = policyFactory;
-        }
-
         [NotNull]
         private IPolicyFactory PolicyFactory { get; }
+
+        [NotNull]
+        private Func<Uri, IRestClient> RestClientFactory { get; }
+
+        public WebsiteDownloader(
+            [NotNull]IPolicyFactory policyFactory, 
+            [NotNull]Func<Uri, IRestClient> restClientFactory)
+        {
+            PolicyFactory = policyFactory;
+            RestClientFactory = restClientFactory;
+        }
 
         public async Task<HtmlDocument> GetWebsiteOrNullWithPolicyAndLoggingAsync(Uri url, string targetPath, CancellationToken cancellationToken)
         {
@@ -46,7 +51,7 @@ namespace WebsitePoller.Workflow
         {
             var resource = url.PathAndQuery;
             var domain = url.GetDomain();
-            var client = new RestClient(domain) { Encoding = Encoding.UTF8 };
+            var client = RestClientFactory(domain);
 
             var request = new RestRequest(resource, Method.GET);
             var response = await client.ExecuteTaskAsync(request, cancellationToken);

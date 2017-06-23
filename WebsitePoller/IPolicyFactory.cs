@@ -5,5 +5,6 @@ namespace WebsitePoller
     public interface IPolicyFactory
     {
         Policy CreateDownloadWebsitePolicy();
+        Policy CreatePostFormPolicy();
     }
 }
