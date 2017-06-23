@@ -40,8 +40,7 @@ namespace WebsitePoller.Entities
                     ^ SettingsComparer.GetHashCode(this);
             }
         }
-        #endregion
-
+        
         public static bool operator ==(Settings settings, Settings other)
         {
             if (ReferenceEquals(settings, other)) return true;
@@ -55,5 +54,7 @@ namespace WebsitePoller.Entities
         {
             return !(settings == other);
         }
+        #endregion
+
     }
 }

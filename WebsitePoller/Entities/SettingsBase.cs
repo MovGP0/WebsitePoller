@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace WebsitePoller.Entities
 {
@@ -14,7 +16,40 @@ namespace WebsitePoller.Entities
         public int MinNumberOfRooms { get; set; }
         public PostalAddress PostalAddress { get; set; }
         public int PollingIntervallInSeconds { get; set; }
-        
-        protected static IEqualityComparer<SettingsBase> SettingsBaseComparer { get; } = new SettingsBaseEqualityComparer();
+
+        protected SettingsBase()
+        {
+        }
+
+        protected static IEqualityComparer<SettingsBase> SettingsBaseComparer => new SettingsBaseEqualityComparer();
+
+        #region ISerializable
+        protected SettingsBase([NotNull]SerializationInfo info, StreamingContext context)
+        {
+            TimeZone = info.GetValue<string>("timeZone");
+            Url = info.GetValue<Uri>("url");
+            MaxEigenmittel = info.GetValue<decimal>("maxEigenmittel");
+            MaxMonatlicheKosten = info.GetValue<decimal>("maxMonatlicheKosten");
+            MinNumberOfRooms = info.GetValue<int>("minNumberOfRooms");
+            PostalAddress = info.GetValue<PostalAddress>("postalAddress");
+            PollingIntervallInSeconds = info.GetValue<int>("pollingIntervallInSeconds");
+
+            PostalCodes = info.GetValue<int[]>("postalCodes");
+            Cities = info.GetValue<string[]>("cities");
+        }
+
+        protected void GetObjectDataBase([NotNull]SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("timeZone", TimeZone);
+            info.AddValue("url", Url);
+            info.AddValue("postalCodes", PostalCodes);
+            info.AddValue("cities", Cities);
+            info.AddValue("maxEigenmittel", MaxEigenmittel);
+            info.AddValue("maxMonatlicheKosten", MaxMonatlicheKosten);
+            info.AddValue("minNumberOfRooms", MinNumberOfRooms);
+            info.AddValue("postalAddress", PostalAddress);
+            info.AddValue("pollingIntervallInSeconds", PollingIntervallInSeconds);
+        }
+        #endregion
     }
 }
