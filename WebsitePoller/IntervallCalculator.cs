@@ -37,7 +37,7 @@ namespace WebsitePoller
             var duration1 = period1.ToDuration();
             var duration2 = period2.ToDuration();
 
-            return duration1.Milliseconds > 0d ? duration1 : duration2;
+            return duration1.TotalMilliseconds > 0d ? duration1 : duration2;
         }
 
         private LocalTime GetCurrentTime([NotNull]string timeZone)
