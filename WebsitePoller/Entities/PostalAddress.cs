@@ -87,12 +87,12 @@ namespace WebsitePoller.Entities
             info.FullTypeName = "PostalAddress";
             info.AssemblyName = "WebsitePoller";
 
-            info.AddValue("version", _version);
+            info.AddVersion(_version);
             info.AddValue("title", Title);
             info.AddValue("salutation", Salutation);
             info.AddValue("firstName", FirstName);
             info.AddValue("familyName", FamilyName);
-            info.AddValue("pirthDate", BirthDate);
+            info.AddValue("birthDate", BirthDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
             info.AddValue("postalCode", PostalCode);
             info.AddValue("city", City);
             info.AddValue("street", Street);

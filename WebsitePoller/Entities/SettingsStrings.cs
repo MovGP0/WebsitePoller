@@ -39,7 +39,7 @@ namespace WebsitePoller.Entities
             info.FullTypeName = "SettingsStrings";
             info.AssemblyName = "WebsitePoller";
 
-            info.AddValue("version", Version);
+            info.AddVersion(Version);
             info.AddValue("from", From);
             info.AddValue("till", Till);
         }

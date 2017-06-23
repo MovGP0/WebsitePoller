@@ -4,6 +4,7 @@ using NodaTime;
 using NUnit.Framework;
 using WebsitePoller.Workflow;
 using System.Collections.Generic;
+using Windows.UI.Notifications;
 using AutoMapper;
 using HtmlAgilityPack;
 using RestSharp;
@@ -39,6 +40,8 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IMapper))]
         [TestCase(typeof(IAltbauWohnungenParser))]
         [TestCase(typeof(Func<Uri, IRestClient>))]
+        [TestCase(typeof(IToastNotifier))]
+        [TestCase(typeof(ToastNotifier))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -70,6 +73,8 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IMapper), typeof(Mapper))]
         [TestCase(typeof(MapperConfiguration), typeof(MapperConfiguration))]
         [TestCase(typeof(IAltbauWohnungenParser), typeof(AltbauWohnungenParser))]
+        [TestCase(typeof(IToastNotifier), typeof(ToastNotifierWrapper))]
+        [TestCase(typeof(ToastNotifier), typeof(ToastNotifier))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;

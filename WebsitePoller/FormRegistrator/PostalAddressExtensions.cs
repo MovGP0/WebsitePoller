@@ -2,7 +2,6 @@
 using RestSharp;
 using RestSharp.Extensions.MonoHttp;
 using WebsitePoller.Entities;
-using WebsitePoller.Setting;
 
 namespace WebsitePoller.FormRegistrator
 {

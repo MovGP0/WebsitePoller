@@ -8,7 +8,13 @@ namespace WebsitePoller.Workflow
 {
     public sealed class Notifier : INotifier
     {
+        public Notifier(IToastNotifier toastNotifier)
+        {
+            ToastNotifier = toastNotifier;
+        }
+
         private static ILogger Log => Serilog.Log.ForContext<Notifier>();
+        private IToastNotifier ToastNotifier { get; }
 
         public void Notify(string message, Uri url)
         {
@@ -18,8 +24,8 @@ namespace WebsitePoller.Workflow
             toast.Activated += ToastActivated;
             toast.Dismissed += ToastDismissed;
             toast.Failed += ToastFailed;
-            
-            ToastNotificationManager.CreateToastNotifier("Website Poller").Show(toast);
+
+            ToastNotifier.Show(toast);
         }
 
         private static XmlDocument GetToastXml(string message, Uri url)

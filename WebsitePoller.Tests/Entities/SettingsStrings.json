@@ -1,0 +1,34 @@
+﻿{
+  "timezone": "Europe/Vienna",
+  "postalCodes": [
+    1000
+  ],
+  "cities": [
+    "Wien"
+  ],
+  "maxEigenmittel": 10000.0,
+  "maxMonatlicheKosten": 800.0,
+  "minNumberOfRooms": 3,
+  "postalAddress": {
+    "version": "1.0",
+    "title": "",
+    "salutation": "Herr",
+    "firstName": "Franz",
+    "familyName": "Mustermann",
+    "birthDate": "1980-12-31T00:00:00",
+    "postalCode": 2000,
+    "city": "Wien",
+    "street": "Straße",
+    "houseNumber": "12a",
+    "stairsNumber": "4b",
+    "apartmentNumber": "9c",
+    "phoneNumber": "0664/123 45 67",
+    "emailAddress": "foo@bar.com",
+    "isTenant": false
+  },
+  "pollingIntervallInSeconds": 20,
+  "url": "/foo/bar",
+  "version": "1.0",
+  "from": "10:20:30",
+  "till": "12:23:45"
+}

@@ -75,7 +75,7 @@ namespace WebsitePoller.Entities
             info.FullTypeName = "AltbauWohnungInfo";
             info.AssemblyName = "WebsitePoller";
 
-            info.AddValue("version", _version);
+            info.AddVersion(_version);
             info.AddValue("href", Href);
             info.AddValue("postalCode", PostalCode);
             info.AddValue("city", City);

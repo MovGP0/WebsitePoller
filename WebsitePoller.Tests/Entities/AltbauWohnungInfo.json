@@ -1,0 +1,10 @@
+﻿{
+  "version": "1.0",
+  "href": "/foo%20",
+  "postalCode": 1010,
+  "city": "Wien",
+  "street": "Straße",
+  "numberOfRooms": 3,
+  "eigenmittel": 20000.0,
+  "monatlicheKosten": 700.0
+}

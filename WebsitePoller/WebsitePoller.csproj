@@ -141,6 +141,7 @@
     <Compile Include="IPolicyFactory.cs" />
     <Compile Include="ITownCrier.cs" />
     <Compile Include="ITownCrierFactory.cs" />
+    <Compile Include="Workflow\IToastNotifier.cs" />
     <Compile Include="Workflow\IWebsiteDownloader.cs" />
     <Compile Include="Workflow\Notifier.cs" />
     <Compile Include="PolicyFactory.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="RegistratorExtensions.cs" />
     <Compile Include="TownCrier.cs" />
     <Compile Include="TownCrierFactory.cs" />
+    <Compile Include="Workflow\ToastNotifierWrapper.cs" />
     <Compile Include="Workflow\UriExtensions.cs" />
     <Compile Include="Workflow\WebsiteDownloader.cs" />
   </ItemGroup>

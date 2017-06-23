@@ -9,8 +9,7 @@ namespace WebsitePoller.Entities
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
-            if (x.GetType() != y.GetType()) return false;
-
+            
             return Equals(x.Version, y.Version) 
                 && string.Equals(x.From, y.From) 
                 && string.Equals(x.Till, y.Till);

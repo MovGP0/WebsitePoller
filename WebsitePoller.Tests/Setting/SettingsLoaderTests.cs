@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
-using JetBrains.Annotations;
 using NodaTime;
 using NUnit.Framework;
 
@@ -13,19 +11,11 @@ namespace WebsitePoller.Tests.Setting
         public sealed class LoadTests
         {
             private static IAn An { get; }
-
-            [NotNull]
-            private static string GetAssemblyPath()
-            {
-                var result = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                if(result == null) throw new Exception("Assembly path was null.");
-                return result;
-            }
-
+            
             [Test]
             public void LoadSettingsFromFile()
             {
-                var filePath = Path.Combine(GetAssemblyPath(), "settings.hjson");
+                var filePath = Path.Combine(An.AssemblyPath(), "settings.hjson");
                 var settingsLoader = An.SettingsLoader();
                 var settings = settingsLoader.Load(filePath);
 

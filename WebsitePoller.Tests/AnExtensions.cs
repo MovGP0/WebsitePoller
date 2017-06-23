@@ -1,6 +1,9 @@
 using System;
+using System.IO;
+using System.Reflection;
 using AutoMapper;
 using DryIoc;
+using JetBrains.Annotations;
 using NodaTime;
 using WebsitePoller.Entities;
 using WebsitePoller.Mappings;
@@ -10,6 +13,14 @@ namespace WebsitePoller.Tests
 {
     public static class AnExtensions
     {
+        [NotNull]
+        public static string AssemblyPath(this IAn an)
+        {
+            var result = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (result == null) throw new Exception("Assembly path was null.");
+            return result;
+        }
+
         public static SettingsBaseEqualityComparer SettingsBaseEqualityComparer(this IAn an)
         {
             return new SettingsBaseEqualityComparer();
@@ -129,6 +140,11 @@ namespace WebsitePoller.Tests
         public static AltbauWohnungInfoEqualityComparer AltbauWohnungInfoEqualityComparer(this IAn an)
         {
             return new AltbauWohnungInfoEqualityComparer();
+        }
+
+        public static VersionFromTillEqualityComparer VersionFromTillEqualityComparer(this IAn an)
+        {
+            return new VersionFromTillEqualityComparer();
         }
     }
 }

@@ -52,6 +52,9 @@
     <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Toolkit.Uwp.Notifications, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Toolkit.Uwp.Notifications.1.4.1\lib\dotnet\Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -79,16 +82,25 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNetCore.WindowsRuntime.1.1.1\lib\portable-netcore451+wpa81+net45+win8\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <HintPath>..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
+    <Reference Include="Windows, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNetCore.WindowsRuntime.1.1.1\lib\portable-netcore451+wpa81+net45+win8\Windows.winmd</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AltbauWohnungInfoEqualityComparerTests.cs" />
+    <Compile Include="Entities\AltbauWohnungInfoTests.cs" />
     <Compile Include="Entities\PostalAddressTests.cs" />
     <Compile Include="Entities\SettingsBaseEqualityComparerTests.cs" />
+    <Compile Include="Entities\SettingsStringsTests.cs" />
     <Compile Include="Entities\SettingsTests.cs" />
+    <Compile Include="Entities\VersionFromTillEqualityComparerTests.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensionsTests.cs" />
     <Compile Include="AnExtensions.cs" />
     <Compile Include="IAn.cs" />
@@ -100,9 +112,15 @@
     <Compile Include="Setting\SettingsLoaderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Entities\AltbauWohnungInfo.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="settings.hjson">
+    <None Include="Entities\settings.hjson">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Entities\SettingsStrings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
