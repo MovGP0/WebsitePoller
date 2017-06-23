@@ -10,7 +10,14 @@ namespace WebsitePoller.Entities
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
-            return string.Equals(x.City, y.City) && x.Eigenmittel == y.Eigenmittel && string.Equals(x.Href, y.Href) && x.MonatlicheKosten == y.MonatlicheKosten && x.NumberOfRooms == y.NumberOfRooms && x.PostalCode == y.PostalCode && string.Equals(x.Street, y.Street);
+
+            return string.Equals(x.City, y.City) 
+                && x.Eigenmittel == y.Eigenmittel 
+                && string.Equals(x.Href, y.Href) 
+                && x.MonatlicheKosten == y.MonatlicheKosten 
+                && x.NumberOfRooms == y.NumberOfRooms 
+                && x.PostalCode == y.PostalCode 
+                && string.Equals(x.Street, y.Street);
         }
 
         public int GetHashCode(AltbauWohnungInfo obj)

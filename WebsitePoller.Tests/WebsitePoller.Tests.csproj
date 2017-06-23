@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AltbauWohnungInfoEqualityComparerTests.cs" />
     <Compile Include="Entities\PostalAddressTests.cs" />
     <Compile Include="Entities\SettingsBaseEqualityComparerTests.cs" />
     <Compile Include="Entities\SettingsTests.cs" />

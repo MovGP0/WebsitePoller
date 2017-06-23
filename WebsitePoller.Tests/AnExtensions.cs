@@ -111,5 +111,24 @@ namespace WebsitePoller.Tests
             var resolver = an.Resolver();
             return resolver.Resolve<IMapper>();
         }
+
+        public static AltbauWohnungInfo AltbauWohnungInfo(this IAn an)
+        {
+            return new AltbauWohnungInfo
+            {
+                City = "Wien",
+                PostalCode = 1010,
+                Eigenmittel = 20000,
+                MonatlicheKosten = 700,
+                Street = "Straﬂe",
+                Href = "/foo%20",
+                NumberOfRooms = 3
+            };
+        }
+
+        public static AltbauWohnungInfoEqualityComparer AltbauWohnungInfoEqualityComparer(this IAn an)
+        {
+            return new AltbauWohnungInfoEqualityComparer();
+        }
     }
 }
