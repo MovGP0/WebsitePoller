@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using HtmlAgilityPack;
 using RestSharp;
+using WebsitePoller.Mappings;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
@@ -26,7 +27,7 @@ namespace WebsitePoller.Tests
         public void SetupMappingsShouldNotThrowAnException()
         {
             var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-            Assert.That(container.SetupDependencies, Throws.Nothing);
+            Assert.That(container.SetupMappings, Throws.Nothing);
         }
 
         [Test]

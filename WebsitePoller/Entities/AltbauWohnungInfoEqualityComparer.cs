@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebsitePoller.Parser
+namespace WebsitePoller.Entities
 {
     public sealed class AltbauWohnungInfoEqualityComparer : IEqualityComparer<AltbauWohnungInfo>
     {

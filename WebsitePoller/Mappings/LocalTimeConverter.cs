@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using AutoMapper;
+using JetBrains.Annotations;
 using NodaTime;
 
-namespace WebsitePoller
+namespace WebsitePoller.Mappings
 {
     public sealed class LocalTimeConverter : ITypeConverter<string, LocalTime>
     {
-        private static LocalTime ConvertToLocalTime(string value)
+        private static LocalTime ConvertToLocalTime([NotNull]string value)
         {
-            var pattern = new Regex("(?<hours>[0-9]{1,2})(\\:(?<minutes>[0-9]{1,2}))?(\\:(?<seconds>[0-9]{1,2}))?");
+            var pattern = new Regex("^(?<hours>[0-9]{1,2})(\\:(?<minutes>[0-9]{1,2}))?(\\:(?<seconds>[0-9]{1,2}))?$", RegexOptions.Compiled | RegexOptions.Singleline);
 
             if (!pattern.IsMatch(value))
             {
@@ -28,8 +29,11 @@ namespace WebsitePoller
             return new LocalTime(hours, minutes, seconds);
         }
 
-        public LocalTime Convert(string source, LocalTime destination, ResolutionContext context)
+        public LocalTime Convert([NotNull]string source, LocalTime destination, ResolutionContext context)
         {
+            if(string.IsNullOrWhiteSpace(source))
+                throw new ArgumentOutOfRangeException(nameof(source), source, "May not be null or white space.");
+
             return ConvertToLocalTime(source);
         }
     }

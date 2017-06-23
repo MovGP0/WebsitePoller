@@ -1,4 +1,5 @@
 using System;
+using WebsitePoller.Entities;
 
 namespace WebsitePoller.Setting
 {

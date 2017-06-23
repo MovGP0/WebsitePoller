@@ -1,7 +1,9 @@
-﻿namespace WebsitePoller
+﻿using JetBrains.Annotations;
+
+namespace WebsitePoller
 {
     public interface ITownCrierFactory
     {
-        ITownCrier Invoke();
+        [NotNull] ITownCrier Invoke();
     }
 }

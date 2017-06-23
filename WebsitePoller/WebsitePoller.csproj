@@ -66,7 +66,7 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.2.4.0\lib\net45\Serilog.dll</HintPath>
+      <HintPath>..\packages\Serilog.2.5.0\lib\net45\Serilog.dll</HintPath>
     </Reference>
     <Reference Include="Serilog.Sinks.EventLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Sinks.EventLog.3.0.36\lib\net45\Serilog.Sinks.EventLog.dll</HintPath>
@@ -103,21 +103,23 @@
     <Compile Include="FormRegistrator\FormRegistrator.cs" />
     <Compile Include="FormRegistrator\IFormRegistrator.cs" />
     <Compile Include="FormRegistrator\PostalAddressExtensions.cs" />
-    <Compile Include="LocalTimeConverter.cs" />
-    <Compile Include="MappingProfile.cs" />
-    <Compile Include="Parser\AltbauWohnungInfo.cs" />
-    <Compile Include="Parser\AltbauWohnungInfoEqualityComparer.cs" />
+    <Compile Include="Mappings\LocalTimeConverter.cs" />
+    <Compile Include="Mappings\MappingProfile.cs" />
+    <Compile Include="Entities\AltbauWohnungInfo.cs" />
+    <Compile Include="Entities\AltbauWohnungInfoEqualityComparer.cs" />
+    <Compile Include="Mappings\RegistratorExtensions.cs" />
     <Compile Include="Parser\IAltbauWohnungenParser.cs" />
-    <Compile Include="Parser\SerializationInfoExtensions.cs" />
+    <Compile Include="Entities\SerializationInfoExtensions.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensions.cs" />
+    <Compile Include="Entities\PostalAddressEqualityComparer.cs" />
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\ISettingsLoader.cs" />
-    <Compile Include="Setting\PostalAddress.cs" />
-    <Compile Include="Setting\Settings.cs" />
+    <Compile Include="Entities\PostalAddress.cs" />
+    <Compile Include="Entities\Settings.cs" />
     <Compile Include="ConfigureService.cs" />
-    <Compile Include="Setting\SettingsBase.cs" />
+    <Compile Include="Entities\SettingsBase.cs" />
     <Compile Include="Setting\SettingsLoader.cs" />
-    <Compile Include="Setting\SettingsStrings.cs" />
+    <Compile Include="Entities\SettingsStrings.cs" />
     <Compile Include="Parser\AltbauWohnungenParser.cs" />
     <Compile Include="Workflow\AssemblyExtensions.cs" />
     <Compile Include="Workflow\ExecuteWorkFlowCommand.cs" />

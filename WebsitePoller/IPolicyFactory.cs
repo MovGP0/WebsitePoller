@@ -1,10 +1,11 @@
-﻿using Polly;
+﻿using JetBrains.Annotations;
+using Polly;
 
 namespace WebsitePoller
 {
     public interface IPolicyFactory
     {
-        Policy CreateDownloadWebsitePolicy();
-        Policy CreatePostFormPolicy();
+        [NotNull] Policy CreateDownloadWebsitePolicy();
+        [NotNull] Policy CreatePostFormPolicy();
     }
 }

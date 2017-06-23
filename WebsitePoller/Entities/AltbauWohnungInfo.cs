@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WebsitePoller.Parser
+namespace WebsitePoller.Entities
 {
+    [Serializable]
     public sealed class AltbauWohnungInfo : IEquatable<AltbauWohnungInfo>, ISerializable
     {
         private readonly Version _version = new Version(1,0);
@@ -20,7 +21,6 @@ namespace WebsitePoller.Parser
         }
 
         #region IEquatable
-
         private static readonly AltbauWohnungInfoEqualityComparer EqualityComparer
             = new AltbauWohnungInfoEqualityComparer();
 
@@ -28,6 +28,19 @@ namespace WebsitePoller.Parser
         public bool Equals(AltbauWohnungInfo other)
         {
             return EqualityComparer.Equals(this, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj)) return true;
+
+            if (obj is AltbauWohnungInfo awi)
+            {
+                return Equals(awi);
+            }
+
+            return false;
         }
 
         public override int GetHashCode()
@@ -59,6 +72,9 @@ namespace WebsitePoller.Parser
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            info.FullTypeName = "AltbauWohnungInfo";
+            info.AssemblyName = "WebsitePoller";
+
             info.AddValue("version", _version);
             info.AddValue("href", Href);
             info.AddValue("postalCode", PostalCode);

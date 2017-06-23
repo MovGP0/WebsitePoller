@@ -4,6 +4,7 @@ using AutoMapper;
 using Hjson;
 using Jil;
 using Serilog;
+using WebsitePoller.Entities;
 using WebsitePoller.Workflow;
 
 namespace WebsitePoller.Setting

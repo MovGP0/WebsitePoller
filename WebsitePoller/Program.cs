@@ -3,6 +3,7 @@ using DryIoc;
 using JetBrains.Annotations;
 using Serilog;
 using Serilog.Events;
+using WebsitePoller.Mappings;
 using WebsitePoller.Setting;
 
 namespace WebsitePoller
@@ -20,10 +21,10 @@ namespace WebsitePoller
 
         private static void Main()
         {
-            // Logging
+            Log.Verbose("setting up logging...");
             Serilog.Log.Logger = SetupLogger();
-
-            // Dependency Injection
+            
+            Log.Verbose("setting up dependency injection...");
             var resolver = SetupDependencyResolver();
             ITownCrier TownCrierFactory()
             {
@@ -31,10 +32,11 @@ namespace WebsitePoller
                 return factory.Invoke();
             }
 
-            // Settings
+            Log.Verbose("loading settings...");
             var settingsLoader = resolver.Resolve<ISettingsLoader>();
             settingsLoader.UpdateSettings();
-            
+
+            Log.Verbose("configuring service...");
             ConfigureService.Configure(ServiceName, LogName, MachineName, TownCrierFactory);
         }
 

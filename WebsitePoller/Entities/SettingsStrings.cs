@@ -1,4 +1,4 @@
-﻿namespace WebsitePoller.Setting
+﻿namespace WebsitePoller.Entities
 {
     public sealed class SettingsStrings : SettingsBase
     {

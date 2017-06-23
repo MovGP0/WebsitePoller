@@ -24,13 +24,13 @@ namespace WebsitePoller.FormRegistrator
         private IPolicyFactory PolicyFactory { get; }
 
         public FormRegistrator(
-            [NotNull] SettingsManager settingsManager, 
-            [NotNull] Func<Uri, IRestClient> restClientFactory, 
+            [NotNull] SettingsManager settingsManager,
+            [NotNull] Func<Uri, IRestClient> restClientFactory,
             [NotNull] IPolicyFactory policyFactory)
         {
-            SettingsManager = settingsManager;
-            RestClientFactory = restClientFactory;
-            PolicyFactory = policyFactory;
+            SettingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            RestClientFactory = restClientFactory ?? throw new ArgumentNullException(nameof(restClientFactory));
+            PolicyFactory = policyFactory ?? throw new ArgumentNullException(nameof(policyFactory));
         }
 
         public async Task PostRegistrationWithPolicyAndLoggingAsync(Uri domain, string href, CancellationToken cancellationToken)
@@ -47,6 +47,9 @@ namespace WebsitePoller.FormRegistrator
 
         public async Task PostRegistrationAsync(Uri domain, string href, CancellationToken cancellationToken)
         {
+            if (domain == null) throw new ArgumentNullException(nameof(domain));
+            if (href == null) throw new ArgumentNullException(nameof(href));
+
             var postalAddress = SettingsManager.Settings.PostalAddress;
             var contactRequest = postalAddress.BuildContactRequest(href);
             var client = RestClientFactory(domain);
@@ -61,7 +64,7 @@ namespace WebsitePoller.FormRegistrator
         public async Task PostRegistrationWithPolicyAsync(Uri domain, string href, CancellationToken cancellationToken)
         {
             var policy = PolicyFactory.CreatePostFormPolicy();
-            await policy.ExecuteAsync(async() => await PostRegistrationAsync(domain, href, cancellationToken));
+            await policy.ExecuteAsync(async () => await PostRegistrationAsync(domain, href, cancellationToken));
         }
     }
 }

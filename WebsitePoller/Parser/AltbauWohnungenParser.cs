@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using Serilog;
+using WebsitePoller.Entities;
 using WebsitePoller.Setting;
 
 namespace WebsitePoller.Parser

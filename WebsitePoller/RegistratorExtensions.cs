@@ -6,6 +6,7 @@ using DryIoc;
 using HtmlAgilityPack;
 using NodaTime;
 using RestSharp;
+using WebsitePoller.Mappings;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 using WebsitePoller.Workflow;
@@ -31,16 +32,6 @@ namespace WebsitePoller
             registrator.Register<IEqualityComparer<HtmlDocument>, HtmlDocumentComparer>();
             registrator.Register<IAltbauWohnungenParser, AltbauWohnungenParser>();
             registrator.RegisterDelegate<Func<Uri, IRestClient>>(r => uri => new RestClient(uri){ Encoding = Encoding.UTF8 });
-            return registrator;
-        }
-
-        public static IRegistrator SetupMappings(this IRegistrator registrator)
-        {
-            registrator.RegisterDelegate(r => new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            }));
-            registrator.RegisterDelegate<IMapper>(r => new Mapper(r.Resolve<MapperConfiguration>()), Reuse.Singleton);
             return registrator;
         }
     }

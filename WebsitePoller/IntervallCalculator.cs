@@ -1,17 +1,22 @@
-﻿using NodaTime;
+﻿using System;
+using JetBrains.Annotations;
+using NodaTime;
 using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {
     public class IntervallCalculator : IIntervallCalculator
     {
+        [NotNull]
         private IClock SystemClock { get; }
+
+        [NotNull]
         private SettingsManager SettingsManager { get; }
 
-        public IntervallCalculator(IClock systemClock, SettingsManager settingsManager)
+        public IntervallCalculator([NotNull]IClock systemClock, [NotNull]SettingsManager settingsManager)
         {
-            SystemClock = systemClock;
-            SettingsManager = settingsManager;
+            SystemClock = systemClock ?? throw new ArgumentNullException(nameof(systemClock));
+            SettingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
         }
 
         public Duration CalculateDurationTillIntervall()
@@ -35,11 +40,17 @@ namespace WebsitePoller
             return duration1.Milliseconds > 0d ? duration1 : duration2;
         }
 
-        private LocalTime GetCurrentTime(string timeZone)
+        private LocalTime GetCurrentTime([NotNull]string timeZone)
         {
+            if (timeZone == null) throw new ArgumentException("May not be null.", nameof(timeZone));
+            if (string.IsNullOrWhiteSpace(timeZone)) throw new ArgumentException("May not be empty.", nameof(timeZone));
+
             var now = SystemClock.GetCurrentInstant();
-            var austria = DateTimeZoneProviders.Tzdb[timeZone];
-            var localInstant = now.InZone(austria);
+            var dateTimeZone = DateTimeZoneProviders.Tzdb[timeZone];
+
+            if(dateTimeZone == null) throw new ArgumentException($"Time zone '{timeZone}' could not be found.");
+
+            var localInstant = now.InZone(dateTimeZone);
             return localInstant.TimeOfDay;
         }
     }

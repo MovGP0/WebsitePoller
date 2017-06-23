@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using NodaTime;
-using WebsitePoller.Setting;
+using WebsitePoller.Entities;
 
-namespace WebsitePoller
+namespace WebsitePoller.Mappings
 {
     public sealed class MappingProfile : Profile
     {
