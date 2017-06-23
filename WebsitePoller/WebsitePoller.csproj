@@ -100,6 +100,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ArrayHashExtensions.cs" />
+    <Compile Include="Entities\SettingsBaseEqualityComparer.cs" />
+    <Compile Include="Entities\SettingsEqualityComparer.cs" />
     <Compile Include="FormRegistrator\FormRegistrator.cs" />
     <Compile Include="FormRegistrator\IFormRegistrator.cs" />
     <Compile Include="FormRegistrator\PostalAddressExtensions.cs" />

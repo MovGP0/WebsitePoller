@@ -69,8 +69,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\PostalAddressTests.cs" />
+    <Compile Include="Entities\SettingsBaseEqualityComparerTests.cs" />
+    <Compile Include="Entities\SettingsTests.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensionsTests.cs" />
+    <Compile Include="AnExtensions.cs" />
+    <Compile Include="IAn.cs" />
     <Compile Include="Mappings\LocalTimeConverterTests.cs" />
+    <Compile Include="Mappings\SettingsMappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistratorExtensionsTests.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebsitePoller.Entities
 {
@@ -10,8 +11,10 @@ namespace WebsitePoller.Entities
         public string[] Cities { get; set; }
         public decimal MaxEigenmittel { get; set; }
         public decimal MaxMonatlicheKosten { get; set; }
-        public int MinNumberOfRooms { get; set; } = 3;
+        public int MinNumberOfRooms { get; set; }
         public PostalAddress PostalAddress { get; set; }
         public int PollingIntervallInSeconds { get; set; }
+        
+        protected static IEqualityComparer<SettingsBase> SettingsBaseComparer { get; } = new SettingsBaseEqualityComparer();
     }
 }

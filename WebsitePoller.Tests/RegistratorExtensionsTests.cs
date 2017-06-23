@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using HtmlAgilityPack;
 using RestSharp;
-using WebsitePoller.Mappings;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
@@ -16,18 +15,12 @@ namespace WebsitePoller.Tests
     [TestFixture]
     public sealed class RegistratorExtensionsTests
     {
+        private IAn An { get; }
+        
         [Test]
-        public void SetupDependencienShouldNotThrowAnException()
+        public void SetupContainerShouldNotThrowAnException()
         {
-            var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-            Assert.That(container.SetupDependencies, Throws.Nothing);
-        }
-
-        [Test]
-        public void SetupMappingsShouldNotThrowAnException()
-        {
-            var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-            Assert.That(container.SetupMappings, Throws.Nothing);
+            Assert.That(() => An.Container(), Throws.Nothing);
         }
 
         [Test]
@@ -51,9 +44,7 @@ namespace WebsitePoller.Tests
             IRegistrator registrator;
             try
             {
-                var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-                container.SetupDependencies().SetupMappings();
-                registrator = container;
+                registrator = An.Registrator();
             }
             catch (Exception)
             {
@@ -85,9 +76,7 @@ namespace WebsitePoller.Tests
 
             try
             {
-                var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
-                container.SetupDependencies().SetupMappings(); 
-                resolver = container;
+                resolver = An.Resolver();
             }
             catch (Exception)
             {
