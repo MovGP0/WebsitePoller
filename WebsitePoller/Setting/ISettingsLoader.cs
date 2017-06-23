@@ -1,4 +1,4 @@
-namespace WebsitePoller.Settings
+namespace WebsitePoller.Setting
 {
     public interface ISettingsLoader
     {

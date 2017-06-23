@@ -102,14 +102,20 @@
   <ItemGroup>
     <Compile Include="LocalTimeConverter.cs" />
     <Compile Include="MappingProfile.cs" />
-    <Compile Include="Settings\SettingsManager.cs" />
-    <Compile Include="Settings\ISettingsLoader.cs" />
+    <Compile Include="Parser\AltbauWohnungInfo.cs" />
+    <Compile Include="Parser\AltbauWohnungInfoEqualityComparer.cs" />
+    <Compile Include="Parser\IAltbauWohnungenParser.cs" />
+    <Compile Include="Parser\SerializationInfoExtensions.cs" />
+    <Compile Include="Parser\StringBuilderExtensions.cs" />
+    <Compile Include="Setting\SettingsManager.cs" />
+    <Compile Include="Setting\ISettingsLoader.cs" />
     <Compile Include="PostalAddress.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Setting\Settings.cs" />
     <Compile Include="ConfigureService.cs" />
-    <Compile Include="Settings\SettingsBase.cs" />
-    <Compile Include="Settings\SettingsLoader.cs" />
-    <Compile Include="Settings\SettingsStrings.cs" />
+    <Compile Include="Setting\SettingsBase.cs" />
+    <Compile Include="Setting\SettingsLoader.cs" />
+    <Compile Include="Setting\SettingsStrings.cs" />
+    <Compile Include="Parser\AltbauWohnungenParser.cs" />
     <Compile Include="Workflow\AssemblyExtensions.cs" />
     <Compile Include="Workflow\ExecuteWorkFlowCommand.cs" />
     <Compile Include="HostConfiguratorLoggingExtensions.cs" />
@@ -144,5 +150,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

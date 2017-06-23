@@ -4,7 +4,8 @@ using AutoMapper;
 using DryIoc;
 using HtmlAgilityPack;
 using NodaTime;
-using WebsitePoller.Settings;
+using WebsitePoller.Parser;
+using WebsitePoller.Setting;
 using WebsitePoller.Workflow;
 
 namespace WebsitePoller
@@ -26,6 +27,7 @@ namespace WebsitePoller
             registrator.Register<IFileContentComparer, FileContentComparer>();
             registrator.Register<INotifier, Notifier>();
             registrator.Register<IEqualityComparer<HtmlDocument>, HtmlDocumentComparer>();
+            registrator.Register<IAltbauWohnungenParser, AltbauWohnungenParser>();
             return registrator;
         }
 

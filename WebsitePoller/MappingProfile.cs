@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using NodaTime;
-using WebsitePoller.Settings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {
@@ -9,7 +9,7 @@ namespace WebsitePoller
         public MappingProfile()
         {
             CreateMap<string, LocalTime>().ConvertUsing<LocalTimeConverter>();
-            CreateMap<SettingsStrings, Settings.Settings>();
+            CreateMap<SettingsStrings, Settings>();
         }
     }
 }

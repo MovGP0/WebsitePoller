@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Serilog;
-using WebsitePoller.Settings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller.Workflow
 {

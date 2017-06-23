@@ -2,11 +2,12 @@
 using DryIoc;
 using NodaTime;
 using NUnit.Framework;
-using WebsitePoller.Settings;
 using WebsitePoller.Workflow;
 using System.Collections.Generic;
 using AutoMapper;
 using HtmlAgilityPack;
+using WebsitePoller.Parser;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller.Tests
 {
@@ -41,6 +42,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IEqualityComparer<HtmlDocument>))]
         [TestCase(typeof(MapperConfiguration))]
         [TestCase(typeof(IMapper))]
+        [TestCase(typeof(IAltbauWohnungenParser))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -73,6 +75,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(INotifier), typeof(Notifier))]
         [TestCase(typeof(IMapper), typeof(Mapper))]
         [TestCase(typeof(MapperConfiguration), typeof(MapperConfiguration))]
+        [TestCase(typeof(IAltbauWohnungenParser), typeof(AltbauWohnungenParser))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;

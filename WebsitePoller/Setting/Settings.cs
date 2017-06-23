@@ -1,6 +1,6 @@
 ﻿using NodaTime;
 
-namespace WebsitePoller.Settings
+namespace WebsitePoller.Setting
 {
     public sealed class Settings : SettingsBase
     {

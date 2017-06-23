@@ -1,5 +1,5 @@
 ﻿using NodaTime;
-using WebsitePoller.Settings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {

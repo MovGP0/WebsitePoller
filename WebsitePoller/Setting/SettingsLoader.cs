@@ -6,7 +6,7 @@ using Jil;
 using Serilog;
 using WebsitePoller.Workflow;
 
-namespace WebsitePoller.Settings
+namespace WebsitePoller.Setting
 {
     public sealed class SettingsLoader : ISettingsLoader
     {

@@ -3,7 +3,7 @@ using System.Timers;
 using JetBrains.Annotations;
 using NodaTime;
 using Serilog;
-using WebsitePoller.Settings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebsitePoller.Settings
+namespace WebsitePoller.Setting
 {
     public abstract class SettingsBase
     {

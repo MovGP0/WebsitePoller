@@ -3,7 +3,7 @@ using DryIoc;
 using JetBrains.Annotations;
 using Serilog;
 using Serilog.Events;
-using WebsitePoller.Settings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {
