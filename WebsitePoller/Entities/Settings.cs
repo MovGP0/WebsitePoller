@@ -9,7 +9,7 @@ namespace WebsitePoller.Entities
     {
         public LocalTime From { get; set; }
         public LocalTime Till { get; set; }
-
+        
         #region IEquatable
         [NotNull]
         private static IEqualityComparer<Settings> SettingsComparer => new SettingsEqualityComparer();

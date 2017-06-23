@@ -8,7 +8,6 @@ namespace WebsitePoller.Entities
     public abstract class SettingsBase
     {
         public string TimeZone { get; set; }
-        public Uri Url { get; set; }
         public int[] PostalCodes { get; set; }
         public string[] Cities { get; set; }
         public decimal MaxEigenmittel { get; set; }
@@ -16,7 +15,8 @@ namespace WebsitePoller.Entities
         public int MinNumberOfRooms { get; set; }
         public PostalAddress PostalAddress { get; set; }
         public int PollingIntervallInSeconds { get; set; }
-
+        public Uri Url { get; set; }
+        
         protected SettingsBase()
         {
         }
@@ -26,22 +26,20 @@ namespace WebsitePoller.Entities
         #region ISerializable
         protected SettingsBase([NotNull]SerializationInfo info, StreamingContext context)
         {
-            TimeZone = info.GetValue<string>("timeZone");
-            Url = info.GetValue<Uri>("url");
+            TimeZone = info.GetValue<string>("timezone");
             MaxEigenmittel = info.GetValue<decimal>("maxEigenmittel");
             MaxMonatlicheKosten = info.GetValue<decimal>("maxMonatlicheKosten");
             MinNumberOfRooms = info.GetValue<int>("minNumberOfRooms");
             PostalAddress = info.GetValue<PostalAddress>("postalAddress");
             PollingIntervallInSeconds = info.GetValue<int>("pollingIntervallInSeconds");
-
             PostalCodes = info.GetValue<int[]>("postalCodes");
             Cities = info.GetValue<string[]>("cities");
+            Url = info.GetValue<Uri>("url");
         }
 
         protected void GetObjectDataBase([NotNull]SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("timeZone", TimeZone);
-            info.AddValue("url", Url);
+            info.AddValue("timezone", TimeZone);
             info.AddValue("postalCodes", PostalCodes);
             info.AddValue("cities", Cities);
             info.AddValue("maxEigenmittel", MaxEigenmittel);
@@ -49,6 +47,7 @@ namespace WebsitePoller.Entities
             info.AddValue("minNumberOfRooms", MinNumberOfRooms);
             info.AddValue("postalAddress", PostalAddress);
             info.AddValue("pollingIntervallInSeconds", PollingIntervallInSeconds);
+            info.AddValue("url", Url);
         }
         #endregion
     }

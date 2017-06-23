@@ -1,8 +1,10 @@
 using System;
+using AutoMapper;
 using DryIoc;
 using NodaTime;
 using WebsitePoller.Entities;
 using WebsitePoller.Mappings;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller.Tests
 {
@@ -89,5 +91,25 @@ namespace WebsitePoller.Tests
             return container;
         }
 
+        private static readonly Lazy<SettingsManager> SettingsManagerFactory 
+            = new Lazy<SettingsManager>(() => new SettingsManager());
+
+        public static SettingsManager SettingsManager(this IAn an)
+        {
+            return SettingsManagerFactory.Value;
+        }
+
+        public static SettingsLoader SettingsLoader(this IAn an)
+        {
+            var settingsManager = an.SettingsManager();
+            var mapper = an.Mapper();
+            return new SettingsLoader(settingsManager, mapper);
+        }
+
+        public static IMapper Mapper(this IAn an)
+        {
+            var resolver = an.Resolver();
+            return resolver.Resolve<IMapper>();
+        }
     }
 }

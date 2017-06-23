@@ -1,15 +1,12 @@
-﻿// this is a HJSON file. For more information see https://hjson.org/
-{
-  // version of the settings file format; keep at "1.0". 
-  "version": "1.0",
-
+﻿{
+  "version":  "1.0",
   "postalAddress": {
-    "version": "1.0", // must be "1.0"
-    "salutation": "Herr", // must be 'Herr' or 'Frau'
+    "version": "1.0",
+    "salutation": "Herr",
     "firstName": "Michael",
     "familyName": "Stanojevic",
-    "title": "", // Valid options:  "", "KommR.", "Dir.", "Prof.", "Dr.", "DI.", "DI.(FH)", "Mag.", "Mag.(FH)"
-    "birthDate": "1989-11-14", // must be in ISO-Format (YYYY-MM-DD)
+    "title": "",
+    "birthDate": "1989-11-14",
     "postalCode": "1160",
     "city": "Wien",
     "street": "Ottakringer Straße",
@@ -20,36 +17,17 @@
     "emailAddress": "michael.stanojevic@gmx.at",
     "isTenant": false
   },
-
-  // The URL to download.
   "url": "http://www.sozialbau.at/nc/home/suche/altbau-wohnungen/",
-
-  // The IANA name of the timezone for the timeframe.
-  // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a full list.
-  // WARNING: the application might crash when not set to a proper timezone.
   "timezone": "Europe/Vienna",
-
-  // The timeframe when to poll the site.
-  // Must be in the format 'hh', 'hh:mm', or 'hh:mm:ss'. Single digits are allowed too.
-  // Values must be in the range from 00:00:00 till 23:59:59.
   "from": "21:00",
   "till": "23:59",
-
-  // Warning:: do net set this too low!
   "pollingIntervallInSeconds": 20,
-
-  // Constrains on which flats to find.
-  "maxEigenmittel": 22000.00, // number > 0
-  "maxMonatlicheKosten": 850.00, // number > 0
-  "minNumberOfRooms": 3, // integer > 0
-
-  // List of all cities to search for.
+  "maxEigenmittel": 22000.00,
+  "maxMonatlicheKosten": 850.00,
+  "minNumberOfRooms": 3,
   "cities": [
     "Wien"
   ],
-
-  // List of all postal codes to search for. Must be a 4-digit integer.
-  // Vienna is 1005..2301.
   "postalCodes": [
     1005,
     1006,

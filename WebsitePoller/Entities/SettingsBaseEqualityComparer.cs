@@ -19,7 +19,8 @@ namespace WebsitePoller.Entities
                 && x.PollingIntervallInSeconds == y.PollingIntervallInSeconds 
                 && Equals(x.PostalAddress, y.PostalAddress) 
                 && x.PostalCodes.SequenceEqual(y.PostalCodes) 
-                && string.Equals(x.TimeZone, y.TimeZone) && Equals(x.Url, y.Url);
+                && string.Equals(x.TimeZone, y.TimeZone)
+                && x.Url == x.Url;
         }
 
         public int GetHashCode(SettingsBase obj)

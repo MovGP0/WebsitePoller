@@ -10,16 +10,18 @@ namespace WebsitePoller.Entities
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
-            return x.From.Equals(y.From) && x.Till.Equals(y.Till);
+
+            return x.From.Equals(y.From) 
+                && x.Till.Equals(y.Till);
         }
 
         public int GetHashCode(Settings obj)
         {
             unchecked
             {
-                return 
-                    (obj.From.GetHashCode() * 397) 
-                    ^ obj.Till.GetHashCode();
+                var hashCode = obj.From.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.Till.GetHashCode();
+                return hashCode;
             }
         }
     }

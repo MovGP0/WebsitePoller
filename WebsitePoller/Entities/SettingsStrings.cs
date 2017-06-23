@@ -12,7 +12,7 @@ namespace WebsitePoller.Entities
 
         public string From { get; set; }
         public string Till { get; set; }
-
+        
         public SettingsStrings()
         {
         }

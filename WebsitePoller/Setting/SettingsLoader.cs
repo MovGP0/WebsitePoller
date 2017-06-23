@@ -2,7 +2,8 @@ using System.IO;
 using System.Reflection;
 using AutoMapper;
 using Hjson;
-using Jil;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Serilog;
 using WebsitePoller.Entities;
 using WebsitePoller.Workflow;
@@ -20,7 +21,7 @@ namespace WebsitePoller.Setting
             SettingsManager = settingsManager;
             Mapper = mapper;
         }
-        
+
         public void UpdateSettings()
         {
             var path = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "settings.hjson");
@@ -34,7 +35,7 @@ namespace WebsitePoller.Setting
             SettingsManager.Settings = settings;
         }
 
-        public Settings Load(string path)
+        public Settings Load([NotNull]string path)
         {
             var jsonString = HjsonValue.Load(path).ToString();
             return DeserializeSettings(jsonString);
@@ -42,11 +43,8 @@ namespace WebsitePoller.Setting
 
         private Settings DeserializeSettings(string jsonString)
         {
-            using (var input = new StringReader(jsonString))
-            {
-                var result = JSON.Deserialize<SettingsStrings>(input);
-                return Mapper.Map<SettingsStrings, Settings>(result);
-            }
+            var result = JsonConvert.DeserializeObject<SettingsStrings>(jsonString);
+            return Mapper.Map<SettingsStrings, Settings>(result);
         }
     }
 }
