@@ -2,6 +2,7 @@ using System;
 
 namespace WebsitePoller.Setting
 {
+    /// <threadsafety static="true" instance="true"/>
     public sealed class SettingsManager
     {
         private Settings _settings;
