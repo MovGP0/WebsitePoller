@@ -12,7 +12,7 @@ namespace WebsitePoller.Workflow
         
         public int GetHashCode(HtmlDocument obj)
         {
-            return obj.CheckSum;
+            return obj == null ? 0 : obj.CheckSum;
         }
     }
 }
