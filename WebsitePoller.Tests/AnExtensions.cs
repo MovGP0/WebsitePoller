@@ -39,7 +39,7 @@ namespace WebsitePoller.Tests
                 Url = new Uri(@"/foo/bar", UriKind.Relative),
                 MaxMonatlicheKosten = 800m,
                 TimeZone = @"Europe/Vienna",
-                PostalCodes = new[] { 1000 },
+                PostalCodes = new[] { 1000, 1010 },
                 MinNumberOfRooms = 3,
                 PollingIntervallInSeconds = 20
             };
@@ -57,9 +57,23 @@ namespace WebsitePoller.Tests
                 Url = new Uri(@"/foo/bar", UriKind.Relative), 
                 MaxMonatlicheKosten = 800m, 
                 TimeZone = @"Europe/Vienna", 
-                PostalCodes = new []{ 1000 }, 
+                PostalCodes = new []{ 1000, 1010 }, 
                 MinNumberOfRooms = 3, 
                 PollingIntervallInSeconds = 20
+            };
+        }
+
+        public static AltbauWohnungInfo AltbauWohnungInfo2(this IAn an)
+        {
+            return new AltbauWohnungInfo
+            {
+                City = "Wien",
+                PostalCode = 1010,
+                Eigenmittel = 10000m,
+                MonatlicheKosten = 800m,
+                Street = "Straﬂe",
+                Href = "/foo%20",
+                NumberOfRooms = 3
             };
         }
 

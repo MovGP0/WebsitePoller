@@ -1,7 +1,8 @@
 ﻿{
   "timezone": "Europe/Vienna",
   "postalCodes": [
-    1000
+    1000,
+    1010
   ],
   "cities": [
     "Wien"

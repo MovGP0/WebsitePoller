@@ -108,6 +108,7 @@
     <Compile Include="Mappings\LocalTimeConverterTests.cs" />
     <Compile Include="Mappings\SettingsMappingTests.cs" />
     <Compile Include="Parser\AddressFieldParserTests.cs" />
+    <Compile Include="Parser\AltbauWohnungenFilterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistratorExtensionsTests.cs" />
     <Compile Include="Setting\SettingsLoaderTests.cs" />

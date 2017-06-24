@@ -19,8 +19,12 @@ namespace WebsitePoller.Tests.Mappings
             var expected = An.Settings();
 
             var settings = mapper.Map<Settings>(settingsStrings);
-            
-            Assert.That(settings, Is.EqualTo(expected));
+
+            Assert.Multiple(() => {
+                Assert.That(settings, Is.EqualTo(expected), "Equality");
+                Assert.That(settings.From, Is.EqualTo(expected.From), "From");
+                Assert.That(settings.Till, Is.EqualTo(expected.Till), "Till");
+            });
         }
     }
 }
