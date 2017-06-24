@@ -1,13 +1,18 @@
 using System;
 using Windows.Data.Xml.Dom;
+using JetBrains.Annotations;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace WebsitePoller.Workflow
 {
     public static class NotificationMessageFactory
     {
-        public static XmlDocument GetToastXml(string message, Uri url)
+        [NotNull]
+        public static XmlDocument GetToastXml([NotNull]string message, [NotNull]Uri url)
         {
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            if (url == null) throw new ArgumentNullException(nameof(url));
+
             var toastContent = new ToastContent
             {
                 Visual = new ToastVisual

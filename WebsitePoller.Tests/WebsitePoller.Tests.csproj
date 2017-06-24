@@ -120,6 +120,7 @@
     <Compile Include="Workflow\AssemblyExtensionsTests.cs" />
     <Compile Include="Workflow\HtmlDocumentComparerTests.cs" />
     <Compile Include="Workflow\HtmlDocumentFactoryTests.cs" />
+    <Compile Include="Workflow\NotificationMessageFactoryTests.cs" />
     <Compile Include="Workflow\NotifierTests.cs" />
     <Compile Include="Workflow\ToastNotifierWrapperTests.cs" />
     <Compile Include="Workflow\UriExtensionsTests.cs" />
@@ -155,6 +156,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="empty.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Workflow\toast.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

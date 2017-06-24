@@ -1,0 +1,1 @@
+﻿<?xml version="1.0"?><toast><visual><binding template="ToastGeneric"><text hint-maxLines="1">Website Poller</text><text>message</text><text>http://localhost/</text></binding></visual></toast>
