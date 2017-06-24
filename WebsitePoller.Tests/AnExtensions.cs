@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using NodaTime;
 using WebsitePoller.Entities;
 using WebsitePoller.Mappings;
+using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
 namespace WebsitePoller.Tests
@@ -145,6 +146,11 @@ namespace WebsitePoller.Tests
         public static VersionFromTillEqualityComparer VersionFromTillEqualityComparer(this IAn an)
         {
             return new VersionFromTillEqualityComparer();
+        }
+
+        public static AddressFieldParser AddressFieldParser(this IAn an)
+        {
+            return new AddressFieldParser();
         }
     }
 }

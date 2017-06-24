@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Serilog;
 using WebsitePoller.Entities;
-using WebsitePoller.Setting;
 
 namespace WebsitePoller.Parser
 {
     public sealed class AltbauWohnungenParser : IAltbauWohnungenParser
     {
         private static ILogger Log => Serilog.Log.ForContext<AltbauWohnungenParser>();
-        private SettingsManager SettingsManager { get; }
-        private static readonly Regex AddressRegex 
-            = new Regex("(?<postalcode>[0-9]{4}) (?<city>[A-Za-zäöüÄÖÜß ]+), (?<street>.*)");
+        private IAddressFieldParser AddressFieldParser { get; }
 
-        public AltbauWohnungenParser(SettingsManager settingsManager)
+        public AltbauWohnungenParser([NotNull]IAddressFieldParser addressFieldParser)
         {
-            SettingsManager = settingsManager;
+            AddressFieldParser = addressFieldParser ?? throw new ArgumentNullException(nameof(addressFieldParser));
         }
 
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocumentWithLogging(HtmlDocument document)
@@ -37,8 +34,7 @@ namespace WebsitePoller.Parser
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocument(HtmlDocument document)
         {
             var table = document.QuerySelectorAll("table.contenttable > tbody > tr");
-            var candidates = table.Select(row => ParseRow(row.ChildNodes));
-            return FilterCandidates(candidates, SettingsManager.Settings);
+            return table.Select(row => ParseRow(row.ChildNodes)).WithoutNulls();
         }
 
         private static string FixUriEncoding(string uri)
@@ -46,19 +42,23 @@ namespace WebsitePoller.Parser
             return uri.Replace("&amp;", "&").Replace("[", "%5B").Replace("]", "%5D");
         }
 
-        private static AltbauWohnungInfo ParseRow(HtmlNodeCollection nodes)
+        private AltbauWohnungInfo ParseRow(HtmlNodeCollection nodes)
         {
             var href = FixUriEncoding(nodes[0].QuerySelector("a").Attributes["href"].Value);
             var title = nodes[0].QuerySelector("a").Attributes["title"].Value;
-            
-            var matches = AddressRegex.Match(title);
+            var address = AddressFieldParser.ParseWithLoggingOrNull(title);
+
+            if (address == null)
+            {
+                return null;
+            }
 
             return new AltbauWohnungInfo
             {
                 Href = href,
-                PostalCode = GetPostalCode(matches),
-                City = GetCity(matches),
-                Street = GetStreet(matches),
+                PostalCode = address.PostalCode,
+                City = address.City,
+                Street = address.Street,
                 NumberOfRooms = GetNumberOfRooms(nodes),
                 Eigenmittel = GetEigenmittel(nodes),
                 MonatlicheKosten = GetMonatlicheKosten(nodes)
@@ -80,35 +80,10 @@ namespace WebsitePoller.Parser
             return int.Parse(nodes[1].QuerySelector("p").InnerHtml);
         }
 
-        private static string GetStreet(Match matches)
-        {
-            return matches.Groups["street"].Value;
-        }
-
-        private static string GetCity(Match matches)
-        {
-            return matches.Groups["city"].Value;
-        }
-
-        private static int GetPostalCode(Match matches)
-        {
-            return int.Parse(matches.Groups["postalcode"].Value);
-        }
-
         private static decimal ParsePrice(string value)
         {
             var cleanedValue = value.Replace("&euro;", "").Replace(".", "").Replace(",", ".");
             return decimal.Parse(cleanedValue);
-        }
-
-        private static IEnumerable<AltbauWohnungInfo> FilterCandidates(IEnumerable<AltbauWohnungInfo> candidates, SettingsBase settings)
-        {
-            return candidates
-                .Where(c => c.Eigenmittel <= settings.MaxEigenmittel)
-                .Where(c => c.MonatlicheKosten <= settings.MaxMonatlicheKosten)
-                .Where(c => c.NumberOfRooms >= settings.MinNumberOfRooms)
-                .Where(c => settings.Cities.Contains(c.City))
-                .Where(c => settings.PostalCodes.Contains(c.PostalCode));
         }
     }
 }

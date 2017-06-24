@@ -33,6 +33,8 @@ namespace WebsitePoller
             registrator.RegisterDelegate<Func<Uri, IRestClient>>(r => uri => new RestClient(uri){ Encoding = Encoding.UTF8 });
             registrator.Register<IToastNotifier, ToastNotifierWrapper>();
             registrator.RegisterDelegate(r => ToastNotificationManager.CreateToastNotifier("Website Poller"));
+            registrator.Register<IAddressFieldParser, AddressFieldParser>();
+            registrator.Register<IAltbauWohnungenFilter, AltbauWohnungenFilter>();
             return registrator;
         }
     }

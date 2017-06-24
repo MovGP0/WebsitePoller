@@ -112,6 +112,12 @@
     <Compile Include="Entities\AltbauWohnungInfo.cs" />
     <Compile Include="Entities\AltbauWohnungInfoEqualityComparer.cs" />
     <Compile Include="Mappings\RegistratorExtensions.cs" />
+    <Compile Include="Parser\AddressFieldParser.cs" />
+    <Compile Include="Parser\AddressFieldParserResult.cs" />
+    <Compile Include="Parser\AltbauWohnungenFilter.cs" />
+    <Compile Include="Parser\EnumerableExtensions.cs" />
+    <Compile Include="Parser\IAddressFieldParser.cs" />
+    <Compile Include="Parser\IAltbauWohnungenFilter.cs" />
     <Compile Include="Parser\IAltbauWohnungenParser.cs" />
     <Compile Include="Entities\SerializationInfoExtensions.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensions.cs" />

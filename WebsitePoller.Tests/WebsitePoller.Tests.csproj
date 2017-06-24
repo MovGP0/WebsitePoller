@@ -107,6 +107,7 @@
     <Compile Include="IntervallCalculatorTests.cs" />
     <Compile Include="Mappings\LocalTimeConverterTests.cs" />
     <Compile Include="Mappings\SettingsMappingTests.cs" />
+    <Compile Include="Parser\AddressFieldParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistratorExtensionsTests.cs" />
     <Compile Include="Setting\SettingsLoaderTests.cs" />

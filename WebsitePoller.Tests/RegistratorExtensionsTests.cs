@@ -42,6 +42,8 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(Func<Uri, IRestClient>))]
         [TestCase(typeof(IToastNotifier))]
         [TestCase(typeof(ToastNotifier))]
+        [TestCase(typeof(IAddressFieldParser))]
+        [TestCase(typeof(IAltbauWohnungenFilter))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -75,6 +77,8 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IAltbauWohnungenParser), typeof(AltbauWohnungenParser))]
         [TestCase(typeof(IToastNotifier), typeof(ToastNotifierWrapper))]
         [TestCase(typeof(ToastNotifier), typeof(ToastNotifier))]
+        [TestCase(typeof(IAddressFieldParser), typeof(AddressFieldParser))]
+        [TestCase(typeof(IAltbauWohnungenFilter), typeof(AltbauWohnungenFilter))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;
