@@ -9,7 +9,7 @@ namespace WebsitePoller.Parser
     public sealed class AltbauWohnungenRowParser : IAltbauWohnungenRowParser
     {
         [NotNull]
-        private static ILogger Log => Serilog.Log.ForContext<AltbauWohnungenParser>();
+        private static ILogger Log => Serilog.Log.ForContext<AltbauWohnungenRowParser>();
 
         [NotNull]
         private IAddressFieldParser AddressFieldParser { get; }
@@ -25,7 +25,7 @@ namespace WebsitePoller.Parser
 
             try
             {
-                return Parse(nodes);
+                return ParseInternal(nodes, AddressFieldParser.ParseWithLoggingOrNull);
             }
             catch (Exception e)
             {
@@ -36,11 +36,16 @@ namespace WebsitePoller.Parser
 
         public AltbauWohnungInfo Parse(HtmlNodeCollection nodes)
         {
+            return ParseInternal(nodes, AddressFieldParser.Parse);
+        }
+        
+        public AltbauWohnungInfo ParseInternal([NotNull]HtmlNodeCollection nodes, [NotNull]Func<string, AddressFieldParserResult> addressParserFunc)
+        {
             if (nodes == null) throw new ArgumentNullException(nameof(nodes));
 
             var href = FixUriEncoding(nodes[0].QuerySelector("a").Attributes["href"].Value);
             var title = nodes[0].QuerySelector("a").Attributes["title"].Value;
-            var address = AddressFieldParser.ParseWithLoggingOrNull(title);
+            var address = addressParserFunc(title);
 
             if (address == null)
             {
@@ -58,7 +63,7 @@ namespace WebsitePoller.Parser
                 MonatlicheKosten = GetMonatlicheKosten(nodes)
             };
         }
-
+        
         private static decimal GetMonatlicheKosten(HtmlNodeCollection nodes)
         {
             return PriceFieldParser.Parse(nodes[3].InnerHtml);

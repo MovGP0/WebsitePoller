@@ -166,5 +166,15 @@ namespace WebsitePoller.Tests
         {
             return new AddressFieldParser();
         }
+
+        public static AddressFieldParserResult AddressFieldParserResult(this IAn an)
+        {
+            return new AddressFieldParserResult
+            {
+                City = "Wien",
+                PostalCode = 1010,
+                Street = "Gürtel Straße 3-2a/16"
+            };
+        }
     }
 }
