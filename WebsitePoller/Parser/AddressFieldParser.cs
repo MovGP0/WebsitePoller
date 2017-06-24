@@ -21,22 +21,16 @@ namespace WebsitePoller.Parser
         }
 
         [NotNull]
-        private ILogger Log => Serilog.Log.ForContext<AddressFieldParser>();
+        private static ILogger Log => Serilog.Log.ForContext<AddressFieldParser>();
 
         private static readonly Regex AddressRegex
             = new Regex("^(?<postalcode>[0-9]{4}) (?<city>[A-Za-z‰ˆ¸ƒ÷‹ﬂ\\. ]+), (?<street>.*)$", RegexOptions.Compiled | RegexOptions.Singleline);
 
         public AddressFieldParserResult Parse([NotNull]string addressFieldString)
         {
-            if (string.IsNullOrWhiteSpace(addressFieldString))
-            {
-                throw new ArgumentOutOfRangeException(nameof(addressFieldString), addressFieldString, "Must not be null or whitespace.");
-            }
-
-            if (!AddressRegex.IsMatch(addressFieldString))
-            {
-                throw new FormatException($"Could not parse address of the form '{addressFieldString}'.");
-            }
+            if (addressFieldString == null) throw new ArgumentNullException(nameof(addressFieldString));
+            if (string.IsNullOrWhiteSpace(addressFieldString)) throw new ArgumentOutOfRangeException(nameof(addressFieldString), addressFieldString, "Must not be null or whitespace.");
+            if (!AddressRegex.IsMatch(addressFieldString)) throw new FormatException($"Could not parse address of the form '{addressFieldString}'.");
 
             var matches = AddressRegex.Match(addressFieldString);
 
