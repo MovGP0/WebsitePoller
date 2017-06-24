@@ -40,3 +40,9 @@ The service supports start/stop as well as pause/resume. To do so, open `service
 Get-Command *-Service
 ```
 to find the proper PowerShell commands. 
+
+## Testing with Resharper 
+
+In case of Resharper, Shadow copy must be disabled such that the tests can run successfully. 
+
+In order to do so, go to `ReSharper` > `Options` > `Tools` > `Unit Testing` and disable `Shadow-copy assembies being tested`. 
