@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Serilog;
 using WebsitePoller.Entities;
 using WebsitePoller.Setting;
 
@@ -10,9 +9,6 @@ namespace WebsitePoller.Parser
 {
     public sealed class AltbauWohnungenFilter : IAltbauWohnungenFilter
     {
-        [NotNull]
-        private static ILogger Log => Serilog.Log.ForContext<AltbauWohnungenFilter>();
-
         [NotNull]
         private SettingsManager SettingsManager { get; }
 
