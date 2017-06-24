@@ -34,7 +34,7 @@ namespace WebsitePoller.Parser
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocument(HtmlDocument document)
         {
             var table = document.QuerySelectorAll("table.contenttable > tbody > tr");
-            return table.Select(row => ParseRow(row.ChildNodes)).WithoutNulls();
+            return table.Select(row => ParseRow(row.ChildNodes)).WithoutNull();
         }
 
         private static string FixUriEncoding(string uri)
