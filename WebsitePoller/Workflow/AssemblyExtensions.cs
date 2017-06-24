@@ -10,7 +10,6 @@ namespace WebsitePoller.Workflow
         public static string GetDirectoryPath([NotNull]this Assembly assembly)
         {
             if(assembly == null) throw new ArgumentNullException(nameof(assembly));
-
             var filePath = new Uri(assembly.CodeBase).LocalPath;
             return Path.GetDirectoryName(filePath);
         }
