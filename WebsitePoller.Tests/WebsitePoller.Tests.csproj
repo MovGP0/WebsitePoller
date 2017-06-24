@@ -117,6 +117,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistratorExtensionsTests.cs" />
     <Compile Include="Setting\SettingsLoaderTests.cs" />
+    <Compile Include="Workflow\UriExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entities\AltbauWohnungInfo.json">
