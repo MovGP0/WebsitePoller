@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using DryIoc;
 using HtmlAgilityPack;
@@ -36,6 +37,7 @@ namespace WebsitePoller
             registrator.Register<IAddressFieldParser, AddressFieldParser>();
             registrator.Register<IAltbauWohnungenFilter, AltbauWohnungenFilter>();
             registrator.Register<IAltbauWohnungenRowParser, AltbauWohnungenRowParser>();
+            registrator.RegisterDelegate<Func<XmlDocument, ToastNotification>>(r => x => new ToastNotification(x));
             return registrator;
         }
     }

@@ -1,23 +1,37 @@
 using System;
 using Windows.UI.Notifications;
+using JetBrains.Annotations;
 using Serilog;
+using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
 
 namespace WebsitePoller.Workflow
 {
     public sealed class Notifier : INotifier
     {
-        public Notifier(IToastNotifier toastNotifier)
+        public Notifier(
+            [NotNull] IToastNotifier toastNotifier, 
+            [NotNull] Func<XmlDocument, ToastNotification> toastNotificationFactory)
         {
-            ToastNotifier = toastNotifier;
+            ToastNotificationFactory = toastNotificationFactory ?? throw new ArgumentNullException(nameof(toastNotificationFactory));
+            ToastNotifier = toastNotifier ?? throw new ArgumentNullException(nameof(toastNotifier));
         }
 
+        [NotNull]
         private static ILogger Log => Serilog.Log.ForContext<Notifier>();
+
+        [NotNull]
         private IToastNotifier ToastNotifier { get; }
 
-        public void Notify(string message, Uri url)
+        [NotNull]
+        private Func<XmlDocument, ToastNotification> ToastNotificationFactory { get; }
+
+        public void Notify([NotNull]string message, [NotNull]Uri url)
         {
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            if (url == null) throw new ArgumentNullException(nameof(url));
+
             var toastXml = NotificationMessageFactory.GetToastXml(message, url);
-            var toast = new ToastNotification(toastXml);
+            var toast = ToastNotificationFactory(toastXml);
 
             toast.Activated += ToastActivated;
             toast.Dismissed += ToastDismissed;

@@ -4,6 +4,7 @@ using NodaTime;
 using NUnit.Framework;
 using WebsitePoller.Workflow;
 using System.Collections.Generic;
+using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using AutoMapper;
 using HtmlAgilityPack;
@@ -45,6 +46,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IAddressFieldParser))]
         [TestCase(typeof(IAltbauWohnungenFilter))]
         [TestCase(typeof(IAltbauWohnungenRowParser))]
+        [TestCase(typeof(Func<XmlDocument, ToastNotification>))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
