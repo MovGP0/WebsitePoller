@@ -118,6 +118,7 @@
     <Compile Include="RegistratorExtensionsTests.cs" />
     <Compile Include="Setting\SettingsLoaderTests.cs" />
     <Compile Include="Workflow\AssemblyExtensionsTests.cs" />
+    <Compile Include="Workflow\HtmlDocumentComparerTests.cs" />
     <Compile Include="Workflow\UriExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -140,12 +141,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Parser\altbau-wohnungen.html">
+    <None Include="altbau-wohnungen.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Parser\table-rows.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="empty.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

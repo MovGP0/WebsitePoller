@@ -51,13 +51,7 @@ namespace WebsitePoller.Tests.Parser
                 var parser = new AltbauWohnungenParser(rowParser);
 
                 // load document
-                var assemblyPath = An.AssemblyPath();
-                var documentPath = Path.Combine(assemblyPath, "Parser", "altbau-wohnungen.html");
-                var document = new HtmlDocument();
-                using (var stream = File.OpenRead(documentPath))
-                {
-                    document.Load(stream);
-                }
+                var document = An.HtmlDocument();
 
                 // act
                 var result = parser.ParseAltbauWohnungenDocument(document);
@@ -96,13 +90,7 @@ namespace WebsitePoller.Tests.Parser
                 var parser = new AltbauWohnungenParser(rowParser);
 
                 // load document
-                var assemblyPath = An.AssemblyPath();
-                var documentPath = Path.Combine(assemblyPath, "Parser", "altbau-wohnungen.html");
-                var document = new HtmlDocument();
-                using (var stream = File.OpenRead(documentPath))
-                {
-                    document.Load(stream);
-                }
+                var document = An.HtmlDocument();
 
                 // act
                 var result = parser.ParseAltbauWohnungenDocumentWithLogging(document);
@@ -128,13 +116,7 @@ namespace WebsitePoller.Tests.Parser
                 var parser = new AltbauWohnungenParser(rowParser);
 
                 // load document
-                var assemblyPath = An.AssemblyPath();
-                var documentPath = Path.Combine(assemblyPath, "Parser", "altbau-wohnungen.html");
-                var document = new HtmlDocument();
-                using (var stream = File.OpenRead(documentPath))
-                {
-                    document.Load(stream);
-                }
+                var document = An.HtmlDocument();
 
                 // act
                 var result = parser.ParseAltbauWohnungenDocumentWithLogging(document).ToArray();

@@ -7,12 +7,20 @@ namespace WebsitePoller.Workflow
     {
         public bool Equals(HtmlDocument x, HtmlDocument y)
         {
-            return GetHashCode(x) == GetHashCode(y);
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            
+            if(GetHashCode(x) != GetHashCode(y)) return false;
+
+            var xHtml = x.DocumentNode.InnerHtml;
+            var yHtml = y.DocumentNode.InnerHtml;
+            return xHtml == yHtml;
         }
         
         public int GetHashCode(HtmlDocument obj)
         {
-            return obj == null ? 0 : obj.CheckSum;
+            return obj?.DocumentNode.InnerHtml.GetHashCode() ?? 0;
         }
     }
 }
