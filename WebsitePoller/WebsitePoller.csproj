@@ -152,6 +152,7 @@
     <Compile Include="ITownCrierFactory.cs" />
     <Compile Include="Workflow\IToastNotifier.cs" />
     <Compile Include="Workflow\IWebsiteDownloader.cs" />
+    <Compile Include="Workflow\NotificationMessageFactory.cs" />
     <Compile Include="Workflow\Notifier.cs" />
     <Compile Include="PolicyFactory.cs" />
     <Compile Include="Program.cs" />
