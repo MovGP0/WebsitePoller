@@ -122,6 +122,7 @@
     <Compile Include="Entities\SerializationInfoExtensions.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensions.cs" />
     <Compile Include="Entities\PostalAddressEqualityComparer.cs" />
+    <Compile Include="Parser\PriceFieldParser.cs" />
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\ISettingsLoader.cs" />
     <Compile Include="Entities\PostalAddress.cs" />

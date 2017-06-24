@@ -67,23 +67,17 @@ namespace WebsitePoller.Parser
 
         private static decimal GetMonatlicheKosten(HtmlNodeCollection nodes)
         {
-            return ParsePrice(nodes[3].InnerHtml);
+            return PriceFieldParser.Parse(nodes[3].InnerHtml);
         }
 
         private static decimal GetEigenmittel(HtmlNodeCollection nodes)
         {
-            return ParsePrice(nodes[2].InnerHtml);
+            return PriceFieldParser.Parse(nodes[2].InnerHtml);
         }
 
         private static int GetNumberOfRooms(HtmlNodeCollection nodes)
         {
             return int.Parse(nodes[1].QuerySelector("p").InnerHtml);
-        }
-
-        private static decimal ParsePrice(string value)
-        {
-            var cleanedValue = value.Replace("&euro;", "").Replace(".", "").Replace(",", ".");
-            return decimal.Parse(cleanedValue);
         }
     }
 }
