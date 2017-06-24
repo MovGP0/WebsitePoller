@@ -48,17 +48,7 @@ namespace WebsitePoller.Tests.Workflow
                     Assert.That(() => notifier.Notify("message", null), Throws.ArgumentNullException, "uri");
                 });
             }
-
-            [Test]
-            public void ShouldShowMessagen()
-            {
-                var toastNotifier = Substitute.For<IToastNotifier>();
-                var notifier = new Notifier(toastNotifier, x => new ToastNotification(x));
-                notifier.Notify("message", new Uri("http://localhost/"));
-
-                Assert.That(() => toastNotifier.Received().Show(Arg.Any<ToastNotification>()), Throws.Nothing, "did not show a toast notification");
-            }
-
+            
             [Test]
             public void ShouldLogDismissedNotification()
             {
