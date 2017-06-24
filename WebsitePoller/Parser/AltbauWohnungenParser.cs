@@ -18,11 +18,13 @@ namespace WebsitePoller.Parser
 
         public AltbauWohnungenParser([NotNull] IAltbauWohnungenRowParser altbauWohnungenRowParser)
         {
-            AltbauWohnungenRowParser = altbauWohnungenRowParser;
+            AltbauWohnungenRowParser = altbauWohnungenRowParser ?? throw new ArgumentNullException(nameof(altbauWohnungenRowParser));
         }
 
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocumentWithLogging(HtmlDocument document)
         {
+            if (document == null) throw new ArgumentNullException(nameof(document));
+
             try
             {
                 return GetContentTable(document)
@@ -35,15 +37,18 @@ namespace WebsitePoller.Parser
                 return new List<AltbauWohnungInfo>();
             }
         }
-
+        
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocument(HtmlDocument document)
         {
+            if(document == null) throw new ArgumentNullException(nameof(document));
+
             return GetContentTable(document)
                 .Select(row => AltbauWohnungenRowParser.Parse(row.ChildNodes))
                 .WithoutNull();
         }
 
-        private static IEnumerable<HtmlNode> GetContentTable(HtmlDocument document)
+        [NotNull]
+        private static IEnumerable<HtmlNode> GetContentTable([NotNull]HtmlDocument document)
         {
             return document.QuerySelectorAll("table.contenttable > tbody > tr");
         }
