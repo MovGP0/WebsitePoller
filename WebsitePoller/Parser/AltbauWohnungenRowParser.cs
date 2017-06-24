@@ -21,6 +21,8 @@ namespace WebsitePoller.Parser
 
         public AltbauWohnungInfo ParseWithLogging(HtmlNodeCollection nodes)
         {
+            if (nodes == null) throw new ArgumentNullException(nameof(nodes));
+
             try
             {
                 return Parse(nodes);
@@ -34,6 +36,8 @@ namespace WebsitePoller.Parser
 
         public AltbauWohnungInfo Parse(HtmlNodeCollection nodes)
         {
+            if (nodes == null) throw new ArgumentNullException(nameof(nodes));
+
             var href = FixUriEncoding(nodes[0].QuerySelector("a").Attributes["href"].Value);
             var title = nodes[0].QuerySelector("a").Attributes["title"].Value;
             var address = AddressFieldParser.ParseWithLoggingOrNull(title);
