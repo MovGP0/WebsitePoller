@@ -109,6 +109,7 @@
     <Compile Include="Mappings\SettingsMappingTests.cs" />
     <Compile Include="Parser\AddressFieldParserTests.cs" />
     <Compile Include="Parser\AltbauWohnungenFilterTests.cs" />
+    <Compile Include="Parser\AltbauWohnungenParserTest.cs" />
     <Compile Include="Parser\EnumerableExtensionsTests.cs" />
     <Compile Include="Parser\PriceFieldParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,7 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="altbau-wohnungen.html">
+    <None Include="Parser\altbau-wohnungen.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

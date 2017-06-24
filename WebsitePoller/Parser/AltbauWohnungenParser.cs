@@ -29,7 +29,8 @@ namespace WebsitePoller.Parser
             {
                 return GetContentTable(document)
                     .Select(row => AltbauWohnungenRowParser.ParseWithLogging(row.ChildNodes))
-                    .WithoutNull();
+                    .WithoutNull()
+                    .ToArray();
             }
             catch (Exception e)
             {
