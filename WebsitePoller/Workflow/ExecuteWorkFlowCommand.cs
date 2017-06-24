@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using JetBrains.Annotations;
 using Serilog;
 using WebsitePoller.Setting;
 
@@ -11,26 +12,36 @@ namespace WebsitePoller.Workflow
 {
     public sealed class ExecuteWorkFlowCommand : IExecuteWorkFlowCommand
     {
+        [NotNull]
         private static ILogger Log => Serilog.Log.ForContext<ExecuteWorkFlowCommand>();
 
+        [NotNull]
         private IWebsiteDownloader WebsiteDownloader { get; }
+
+        [NotNull]
         private IEqualityComparer<HtmlDocument> HtmlDocumentComparer { get; }
+
+        [NotNull]
         private INotifier Notifier { get; }
+
+        [NotNull]
         private SettingsManager SettingsManager { get; }
+
+        [NotNull]
         private ISettingsLoader SettingsLoader { get; }
 
         public ExecuteWorkFlowCommand(
-            IWebsiteDownloader websiteDownloader,
-            IEqualityComparer<HtmlDocument> htmlDocumentComparer, 
-            INotifier notifier,
-            SettingsManager settingsManager, 
-            ISettingsLoader settingsLoader)
+            [NotNull]IWebsiteDownloader websiteDownloader,
+            [NotNull]IEqualityComparer<HtmlDocument> htmlDocumentComparer,
+            [NotNull]INotifier notifier,
+            [NotNull]SettingsManager settingsManager,
+            [NotNull]ISettingsLoader settingsLoader)
         {
-            WebsiteDownloader = websiteDownloader;
-            HtmlDocumentComparer = htmlDocumentComparer;
-            Notifier = notifier;
-            SettingsManager = settingsManager;
-            SettingsLoader = settingsLoader;
+            WebsiteDownloader = websiteDownloader ?? throw new ArgumentNullException(nameof(websiteDownloader));
+            HtmlDocumentComparer = htmlDocumentComparer ?? throw new ArgumentNullException(nameof(htmlDocumentComparer));
+            Notifier = notifier ?? throw new ArgumentNullException(nameof(notifier));
+            SettingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            SettingsLoader = settingsLoader ?? throw new ArgumentNullException(nameof(settingsLoader));
         }
 
         public event EventHandler CanExecuteChanged;
@@ -52,7 +63,10 @@ namespace WebsitePoller.Workflow
 
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var url = SettingsManager.Settings.Url;
+            var settings = SettingsManager.Settings;
+            if(settings == null) throw new InvalidOperationException($"{nameof(SettingsManager.Settings)} was null.");
+
+            var url = settings.Url;
 
             var targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "altbau.xhtml");
             
