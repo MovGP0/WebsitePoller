@@ -119,6 +119,7 @@
     <Compile Include="Setting\SettingsLoaderTests.cs" />
     <Compile Include="Workflow\AssemblyExtensionsTests.cs" />
     <Compile Include="Workflow\HtmlDocumentComparerTests.cs" />
+    <Compile Include="Workflow\HtmlDocumentFactoryTests.cs" />
     <Compile Include="Workflow\UriExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
