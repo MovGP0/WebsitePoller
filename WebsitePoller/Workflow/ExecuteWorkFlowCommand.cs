@@ -61,6 +61,7 @@ namespace WebsitePoller.Workflow
             }
         }
 
+        // TODO: split into smaller commands
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             var settings = SettingsManager.Settings;
@@ -78,25 +79,35 @@ namespace WebsitePoller.Workflow
             if (File.Exists(targetPath))
             {
                 var cachedWebpage = await HtmlDocumentFactory.FromFileAsync(targetPath, cancellationToken);
-                
-                ShowNotificationIfWebsitesDiffer(webpage, cachedWebpage, "Website has changed", url);
+
+                var areEqual = HtmlDocumentComparer.Equals(webpage, cachedWebpage);
+                if (areEqual)
+                {
+                    Log.Verbose("Website has not changed");
+                    return;
+                }
+
+                ShowNotificationThatWebsiteHasChanged("Website has changed", url);
+
+                // TODO: 
+                // get offers from website
+                // filter offers
+                // load checksums of posted offers
+                // filter by checksum
+                // post for any remaining offer
+                // add checksums to file
+
                 File.Delete(targetPath);
             }
             
             await webpage.SaveHtmlDocumentToFileWithLoggingAsync(targetPath, cancellationToken);
         }
 
-        private void ShowNotificationIfWebsitesDiffer(HtmlDocument webpage, HtmlDocument cachedWebpage, string message, Uri uri)
+        private void ShowNotificationThatWebsiteHasChanged(string message, Uri uri)
         {
-            var areEqual = HtmlDocumentComparer.Equals(webpage, cachedWebpage);
-            if (areEqual)
-            {
-                Log.Verbose("Website has not changed");
-                return;
-            }
-
             Log.Verbose("Informing user that site has changed");
             Notifier.Notify(message, uri);
         }
+        
     }
 }
