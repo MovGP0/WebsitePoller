@@ -115,6 +115,7 @@
     <Compile Include="Parser\AddressFieldParser.cs" />
     <Compile Include="Parser\AddressFieldParserResult.cs" />
     <Compile Include="Parser\AltbauWohnungenFilter.cs" />
+    <Compile Include="Parser\AltbauWohnungenRowParser.cs" />
     <Compile Include="Parser\EnumerableExtensions.cs" />
     <Compile Include="Parser\IAddressFieldParser.cs" />
     <Compile Include="Parser\IAltbauWohnungenFilter.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Entities\SerializationInfoExtensions.cs" />
     <Compile Include="FormRegistrator\StringBuilderExtensions.cs" />
     <Compile Include="Entities\PostalAddressEqualityComparer.cs" />
+    <Compile Include="Parser\IAltbauWohnungenRowParser.cs" />
     <Compile Include="Parser\PriceFieldParser.cs" />
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\ISettingsLoader.cs" />

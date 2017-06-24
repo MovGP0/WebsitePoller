@@ -10,19 +10,24 @@ namespace WebsitePoller.Parser
 {
     public sealed class AltbauWohnungenParser : IAltbauWohnungenParser
     {
+        [NotNull]
         private static ILogger Log => Serilog.Log.ForContext<AltbauWohnungenParser>();
-        private IAddressFieldParser AddressFieldParser { get; }
+        
+        [NotNull]
+        private IAltbauWohnungenRowParser AltbauWohnungenRowParser { get; }
 
-        public AltbauWohnungenParser([NotNull]IAddressFieldParser addressFieldParser)
+        public AltbauWohnungenParser([NotNull] IAltbauWohnungenRowParser altbauWohnungenRowParser)
         {
-            AddressFieldParser = addressFieldParser ?? throw new ArgumentNullException(nameof(addressFieldParser));
+            AltbauWohnungenRowParser = altbauWohnungenRowParser;
         }
 
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocumentWithLogging(HtmlDocument document)
         {
             try
             {
-                return ParseAltbauWohnungenDocument(document);
+                return GetContentTable(document)
+                    .Select(row => AltbauWohnungenRowParser.ParseWithLogging(row.ChildNodes))
+                    .WithoutNull();
             }
             catch (Exception e)
             {
@@ -33,51 +38,14 @@ namespace WebsitePoller.Parser
 
         public IEnumerable<AltbauWohnungInfo> ParseAltbauWohnungenDocument(HtmlDocument document)
         {
-            var table = document.QuerySelectorAll("table.contenttable > tbody > tr");
-            return table.Select(row => ParseRow(row.ChildNodes)).WithoutNull();
+            return GetContentTable(document)
+                .Select(row => AltbauWohnungenRowParser.Parse(row.ChildNodes))
+                .WithoutNull();
         }
 
-        private static string FixUriEncoding(string uri)
+        private static IEnumerable<HtmlNode> GetContentTable(HtmlDocument document)
         {
-            return uri.Replace("&amp;", "&").Replace("[", "%5B").Replace("]", "%5D");
-        }
-
-        private AltbauWohnungInfo ParseRow(HtmlNodeCollection nodes)
-        {
-            var href = FixUriEncoding(nodes[0].QuerySelector("a").Attributes["href"].Value);
-            var title = nodes[0].QuerySelector("a").Attributes["title"].Value;
-            var address = AddressFieldParser.ParseWithLoggingOrNull(title);
-
-            if (address == null)
-            {
-                return null;
-            }
-
-            return new AltbauWohnungInfo
-            {
-                Href = href,
-                PostalCode = address.PostalCode,
-                City = address.City,
-                Street = address.Street,
-                NumberOfRooms = GetNumberOfRooms(nodes),
-                Eigenmittel = GetEigenmittel(nodes),
-                MonatlicheKosten = GetMonatlicheKosten(nodes)
-            };
-        }
-
-        private static decimal GetMonatlicheKosten(HtmlNodeCollection nodes)
-        {
-            return PriceFieldParser.Parse(nodes[3].InnerHtml);
-        }
-
-        private static decimal GetEigenmittel(HtmlNodeCollection nodes)
-        {
-            return PriceFieldParser.Parse(nodes[2].InnerHtml);
-        }
-
-        private static int GetNumberOfRooms(HtmlNodeCollection nodes)
-        {
-            return int.Parse(nodes[1].QuerySelector("p").InnerHtml);
+            return document.QuerySelectorAll("table.contenttable > tbody > tr");
         }
     }
 }

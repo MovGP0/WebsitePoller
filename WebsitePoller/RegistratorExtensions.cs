@@ -35,6 +35,7 @@ namespace WebsitePoller
             registrator.RegisterDelegate(r => ToastNotificationManager.CreateToastNotifier("Website Poller"));
             registrator.Register<IAddressFieldParser, AddressFieldParser>();
             registrator.Register<IAltbauWohnungenFilter, AltbauWohnungenFilter>();
+            registrator.Register<IAltbauWohnungenRowParser, AltbauWohnungenRowParser>();
             return registrator;
         }
     }
