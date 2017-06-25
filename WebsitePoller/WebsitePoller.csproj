@@ -139,6 +139,7 @@
     <Compile Include="HostConfiguratorLoggingExtensions.cs" />
     <Compile Include="HostConfiguratorTownCrierExtensions.cs" />
     <Compile Include="Workflow\FileContentComparer.cs" />
+    <Compile Include="Workflow\FileHelper.cs" />
     <Compile Include="Workflow\HtmlDocumentComparer.cs" />
     <Compile Include="Workflow\HtmlDocumentExtensions.cs" />
     <Compile Include="Workflow\HtmlDocumentFactory.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="IPolicyFactory.cs" />
     <Compile Include="ITownCrier.cs" />
     <Compile Include="ITownCrierFactory.cs" />
+    <Compile Include="Workflow\INotifyHelper.cs" />
     <Compile Include="Workflow\IToastNotifier.cs" />
     <Compile Include="Workflow\IWebsiteDownloader.cs" />
     <Compile Include="Workflow\NotificationMessageFactory.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="RegistratorExtensions.cs" />
     <Compile Include="TownCrier.cs" />
     <Compile Include="TownCrierFactory.cs" />
+    <Compile Include="Workflow\NotifyHelper.cs" />
     <Compile Include="Workflow\ToastNotifierWrapper.cs" />
     <Compile Include="Workflow\UriExtensions.cs" />
     <Compile Include="Workflow\WebsiteDownloader.cs" />

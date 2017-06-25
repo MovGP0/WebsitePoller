@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
 using Serilog;
+using WebsitePoller.Entities;
+using WebsitePoller.FormRegistrator;
+using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
 namespace WebsitePoller.Workflow
@@ -20,26 +24,41 @@ namespace WebsitePoller.Workflow
 
         [NotNull]
         private IEqualityComparer<HtmlDocument> HtmlDocumentComparer { get; }
-
-        [NotNull]
-        private INotifier Notifier { get; }
-
+        
         [NotNull]
         private SettingsManager SettingsManager { get; }
 
         [NotNull]
         private ISettingsLoader SettingsLoader { get; }
 
+        [NotNull]
+        private IAltbauWohnungenParser AltbauWohnungenParser { get; }
+
+        [NotNull]
+        private IAltbauWohnungenFilter AltbauWohnungenFilter { get; }
+
+        [NotNull]
+        private IFormRegistrator FormRegistrator { get; }
+
+        [NotNull]
+        private INotifyHelper NotifyHelper { get; }
+
         public ExecuteWorkFlowCommand(
-            [NotNull]IWebsiteDownloader websiteDownloader,
-            [NotNull]IEqualityComparer<HtmlDocument> htmlDocumentComparer,
-            [NotNull]INotifier notifier,
-            [NotNull]SettingsManager settingsManager,
-            [NotNull]ISettingsLoader settingsLoader)
+            [NotNull] IWebsiteDownloader websiteDownloader,
+            [NotNull] IEqualityComparer<HtmlDocument> htmlDocumentComparer,
+            [NotNull] SettingsManager settingsManager,
+            [NotNull] ISettingsLoader settingsLoader,
+            [NotNull] IAltbauWohnungenParser altbauWohnungenParser,
+            [NotNull] IAltbauWohnungenFilter altbauWohnungenFilter,
+            [NotNull] IFormRegistrator formRegistrator, 
+            [NotNull] INotifyHelper notifyHelper)
         {
+            NotifyHelper = notifyHelper ?? throw new ArgumentNullException(nameof(notifyHelper));
+            AltbauWohnungenParser = altbauWohnungenParser ?? throw new ArgumentNullException(nameof(altbauWohnungenParser));
+            AltbauWohnungenFilter = altbauWohnungenFilter ?? throw new ArgumentNullException(nameof(altbauWohnungenFilter));
+            FormRegistrator = formRegistrator ?? throw new ArgumentNullException(nameof(formRegistrator));
             WebsiteDownloader = websiteDownloader ?? throw new ArgumentNullException(nameof(websiteDownloader));
             HtmlDocumentComparer = htmlDocumentComparer ?? throw new ArgumentNullException(nameof(htmlDocumentComparer));
-            Notifier = notifier ?? throw new ArgumentNullException(nameof(notifier));
             SettingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
             SettingsLoader = settingsLoader ?? throw new ArgumentNullException(nameof(settingsLoader));
         }
@@ -64,18 +83,14 @@ namespace WebsitePoller.Workflow
         // TODO: split into smaller commands
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var settings = SettingsManager.Settings;
-            if(settings == null) throw new InvalidOperationException($"{nameof(SettingsManager.Settings)} was null.");
-
+            var settings = LoadSettings();
             var url = settings.Url;
-
-            var targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "altbau.xhtml");
+            var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var targetPath = Path.Combine(applicationDataPath, "altbau.xhtml");
             
-            SettingsLoader.UpdateSettings();
-
             var webpage = await WebsiteDownloader.GetWebsiteOrNullWithPolicyAndLoggingAsync(url, targetPath, cancellationToken);
             if (webpage == null) return;
-            
+
             if (File.Exists(targetPath))
             {
                 var cachedWebpage = await HtmlDocumentFactory.FromFileAsync(targetPath, cancellationToken);
@@ -87,27 +102,38 @@ namespace WebsitePoller.Workflow
                     return;
                 }
 
-                ShowNotificationThatWebsiteHasChanged("Website has changed", url);
+                NotifyHelper.ShowNotificationThatWebsiteHasChanged("Website has changed", url);
 
-                // TODO: 
-                // get offers from website
-                // filter offers
-                // load checksums of posted offers
-                // filter by checksum
-                // post for any remaining offer
-                // add checksums to file
+                var offers = AltbauWohnungenParser.ParseAltbauWohnungenDocumentWithLogging(webpage);
+                var interestingOffers = AltbauWohnungenFilter.Filter(offers);
 
+                var postedHrefsPath = Path.Combine(applicationDataPath, "hrefs.txt");
+                var hrefs = FileHelper.GetFileLines(postedHrefsPath).ToArray();
+
+                var newOffers = interestingOffers.Where(o => !hrefs.Contains(o.Href)).ToArray();
+
+                var domain = settings.Url.GetDomain();
+                foreach (var newOffer in newOffers)
+                {
+                    await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href, cancellationToken);
+                    NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer);
+                }
+
+                var lines = newOffers.Select(o => o.Href);
+                await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsPath, lines);
+                
                 File.Delete(targetPath);
             }
-            
+
             await webpage.SaveHtmlDocumentToFileWithLoggingAsync(targetPath, cancellationToken);
         }
 
-        private void ShowNotificationThatWebsiteHasChanged(string message, Uri uri)
+        private Settings LoadSettings()
         {
-            Log.Verbose("Informing user that site has changed");
-            Notifier.Notify(message, uri);
+            SettingsLoader.UpdateSettings();
+            var settings = SettingsManager.Settings;
+            if (settings == null) throw new InvalidOperationException($"{nameof(SettingsManager.Settings)} was null.");
+            return settings;
         }
-        
     }
 }

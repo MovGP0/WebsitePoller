@@ -38,6 +38,7 @@ namespace WebsitePoller
             registrator.Register<IAltbauWohnungenFilter, AltbauWohnungenFilter>();
             registrator.Register<IAltbauWohnungenRowParser, AltbauWohnungenRowParser>();
             registrator.RegisterDelegate<Func<XmlDocument, ToastNotification>>(r => x => new ToastNotification(x));
+            registrator.Register<INotifyHelper, NotifyHelper>();
             return registrator;
         }
     }

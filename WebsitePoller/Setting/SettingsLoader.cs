@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using AutoMapper;
@@ -12,14 +13,19 @@ namespace WebsitePoller.Setting
 {
     public sealed class SettingsLoader : ISettingsLoader
     {
+        [NotNull]
         private static ILogger Log => Serilog.Log.ForContext<SettingsLoader>();
+
+        [NotNull]
         private SettingsManager SettingsManager { get; }
+
+        [NotNull]
         private IMapper Mapper { get; }
 
-        public SettingsLoader(SettingsManager settingsManager, IMapper mapper)
+        public SettingsLoader([NotNull] SettingsManager settingsManager, [NotNull] IMapper mapper)
         {
-            SettingsManager = settingsManager;
-            Mapper = mapper;
+            SettingsManager = settingsManager ?? throw new ArgumentNullException(nameof(settingsManager));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public void UpdateSettings()
@@ -27,7 +33,7 @@ namespace WebsitePoller.Setting
             var path = Path.Combine(Assembly.GetExecutingAssembly().GetDirectoryPath(), "settings.hjson");
             if (!File.Exists(path))
             {
-                Log.Warning($"Could not open file '{path}'");
+                Log.Error($"Could not find file '{path}'");
                 return;
             }
 
@@ -35,7 +41,7 @@ namespace WebsitePoller.Setting
             SettingsManager.Settings = settings;
         }
 
-        public Settings Load([NotNull]string path)
+        public Settings Load([NotNull] string path)
         {
             var jsonString = HjsonValue.Load(path).ToString();
             return DeserializeSettings(jsonString);
