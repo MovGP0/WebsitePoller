@@ -9,6 +9,7 @@ using Windows.UI.Notifications;
 using AutoMapper;
 using HtmlAgilityPack;
 using RestSharp;
+using WebsitePoller.FormRegistrator;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 
@@ -48,6 +49,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IAltbauWohnungenRowParser))]
         [TestCase(typeof(Func<XmlDocument, ToastNotification>))]
         [TestCase(typeof(INotifyHelper))]
+        [TestCase(typeof(IFormRegistrator))]
         public void MustHaveInterfaceRegistered(Type interfaceType)
         {
             IRegistrator registrator;
@@ -85,6 +87,7 @@ namespace WebsitePoller.Tests
         [TestCase(typeof(IAltbauWohnungenFilter), typeof(AltbauWohnungenFilter))]
         [TestCase(typeof(IAltbauWohnungenRowParser), typeof(AltbauWohnungenRowParser))]
         [TestCase(typeof(INotifyHelper), typeof(NotifyHelper))]
+        [TestCase(typeof(IFormRegistrator), typeof(WebsitePoller.FormRegistrator.FormRegistrator))]
         public void MustBeRegisteredAs(Type interfaceType, Type instanceType)
         {
             IResolver resolver;

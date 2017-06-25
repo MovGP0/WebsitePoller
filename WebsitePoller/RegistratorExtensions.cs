@@ -7,6 +7,7 @@ using DryIoc;
 using HtmlAgilityPack;
 using NodaTime;
 using RestSharp;
+using WebsitePoller.FormRegistrator;
 using WebsitePoller.Parser;
 using WebsitePoller.Setting;
 using WebsitePoller.Workflow;
@@ -39,6 +40,7 @@ namespace WebsitePoller
             registrator.Register<IAltbauWohnungenRowParser, AltbauWohnungenRowParser>();
             registrator.RegisterDelegate<Func<XmlDocument, ToastNotification>>(r => x => new ToastNotification(x));
             registrator.Register<INotifyHelper, NotifyHelper>();
+            registrator.Register<IFormRegistrator, FormRegistrator.FormRegistrator>();
             return registrator;
         }
     }
