@@ -2,6 +2,7 @@ using System;
 using Serilog;
 using Topshelf;
 using JetBrains.Annotations;
+using Serilog.Events;
 
 namespace WebsitePoller
 {
@@ -14,6 +15,19 @@ namespace WebsitePoller
         {
             HostFactory.Run(config =>
             {
+                config.AddCommandLineDefinition("loglevel", lvl =>
+                {
+                    Log.Debug($"Parsing to log level '{lvl}'.");
+                    if (Enum.TryParse(lvl, true, out LogEventLevel logEventLevel))
+                    {
+                        Log.Information($"Switching to log level '{logEventLevel}'.");
+                        Serilog.Log.Logger = LoggerHelper.SetupLogger(logEventLevel);
+                        return;
+                    }
+
+                    var levels = LoggerHelper.GetLogLevels();
+                    Log.Warning($"Could not switch to log level '{lvl}'. Possible values are {levels}.");
+                });
                 config.SetDescription("Background service that polls websites for changes in the background.");
                 config.SetDisplayName("Website Poller");
                 config.SetServiceName(serviceName);

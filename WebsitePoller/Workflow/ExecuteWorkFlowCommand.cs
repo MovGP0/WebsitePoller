@@ -85,8 +85,7 @@ namespace WebsitePoller.Workflow
         {
             var settings = LoadSettings();
             var url = settings.Url;
-            var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var targetPath = Path.Combine(applicationDataPath, "altbau.xhtml");
+            var targetPath = Path.Combine(FileHelper.GetApplicationDataPath(), "altbau.xhtml");
             
             var webpage = await WebsiteDownloader.GetWebsiteOrNullWithPolicyAndLoggingAsync(url, targetPath, cancellationToken);
             if (webpage == null) return;
@@ -104,23 +103,31 @@ namespace WebsitePoller.Workflow
 
                 NotifyHelper.ShowNotificationThatWebsiteHasChanged("Website has changed", url);
 
-                var offers = AltbauWohnungenParser.ParseAltbauWohnungenDocumentWithLogging(webpage);
-                var interestingOffers = AltbauWohnungenFilter.Filter(offers);
+                Log.Debug("Parsing altbau wohnungen document.");
+                var offers = AltbauWohnungenParser.ParseAltbauWohnungenDocumentWithLogging(webpage).ToArray();
 
-                var postedHrefsPath = Path.Combine(applicationDataPath, "hrefs.txt");
-                var hrefs = FileHelper.GetFileLines(postedHrefsPath).ToArray();
+                Log.Debug($"Found {offers.Length} offers.");
 
-                var newOffers = interestingOffers.Where(o => !hrefs.Contains(o.Href)).ToArray();
+                var interestingOffers = AltbauWohnungenFilter.Filter(offers).ToArray();
+
+                Log.Debug($"Found {interestingOffers.Length} interesting offers.");
+
+                var postedHrefsFilePath = Path.Combine(FileHelper.GetApplicationDataPath(), "hrefs.txt");
+                var newOffers = interestingOffers.FilterNewOffers(postedHrefsFilePath).ToArray();
+                
+                Log.Debug($"Found {newOffers.Length} new and interesting offers.");
 
                 var domain = settings.Url.GetDomain();
                 foreach (var newOffer in newOffers)
                 {
+                    Log.Debug("Registering for offer", newOffer);
                     await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href, cancellationToken);
                     NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer);
                 }
 
+                Log.Debug("Saving lines in file.");
                 var lines = newOffers.Select(o => o.Href);
-                await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsPath, lines);
+                await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsFilePath, lines);
                 
                 File.Delete(targetPath);
             }

@@ -53,5 +53,10 @@ namespace WebsitePoller.Workflow
                 }
             }
         }
+
+        public static string GetApplicationDataPath()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        }
     }
 }

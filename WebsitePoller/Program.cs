@@ -1,28 +1,20 @@
-﻿using System;
-using DryIoc;
+﻿using DryIoc;
 using JetBrains.Annotations;
 using Serilog;
-using Serilog.Events;
 using WebsitePoller.Mappings;
 using WebsitePoller.Setting;
+using WebsitePoller.Workflow;
 
 namespace WebsitePoller
 {
     internal class Program
     {
-        private const string ServiceName = "WebsitePoller";
-        private const string LogName = "Application";
-
-        [NotNull]
-        private static readonly string MachineName = Environment.MachineName;
-
         [NotNull]
         private static ILogger Log => Serilog.Log.ForContext<Program>();
 
         private static void Main()
         {
-            Log.Verbose("setting up logging...");
-            Serilog.Log.Logger = SetupLogger();
+            Serilog.Log.Logger = LoggerHelper.SetupLogger();
             
             Log.Verbose("setting up dependency injection...");
             var resolver = SetupDependencyResolver();
@@ -32,23 +24,17 @@ namespace WebsitePoller
                 return factory.Invoke();
             }
 
+            var applicationDataPath = FileHelper.GetApplicationDataPath();
+            Log.Verbose($"Application data will be stored in '{applicationDataPath}'.", applicationDataPath);
+
             Log.Verbose("loading settings...");
             var settingsLoader = resolver.Resolve<ISettingsLoader>();
             settingsLoader.UpdateSettings();
 
             Log.Verbose("configuring service...");
-            ConfigureService.Configure(ServiceName, LogName, MachineName, TownCrierFactory);
+            ConfigureService.Configure(Constants.ServiceName, Constants.LogName, Constants.MachineName, TownCrierFactory);
         }
-
-        [NotNull]
-        private static ILogger SetupLogger()
-        {
-            return new LoggerConfiguration()
-                .WriteTo.EventLog(ServiceName, LogName, MachineName, false, restrictedToMinimumLevel: LogEventLevel.Warning)
-                .WriteTo.LiterateConsole()
-                .CreateLogger();
-        }
-
+        
         [NotNull]
         private static IResolver SetupDependencyResolver()
         {

@@ -79,6 +79,8 @@ namespace WebsitePoller
             };
             _timer.Elapsed += Handle;
             _timer.Start();
+
+            Log.Information($"Sleeping for {timeInMilliseconds:0} ms.");
         }
 
         private Duration SetMinimumDurationWhenZero(Duration timeTillMinTime)
