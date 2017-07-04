@@ -27,7 +27,7 @@ namespace WebsitePoller.Workflow
             Notifier.Notify(message, uri);
         }
 
-        public void ShowNotificationThatRegisteredForOffer(AltbauWohnungInfo offer)
+        public void ShowNotificationThatRegisteredForOffer(AltbauWohnungInfo offer, Uri domain)
         {
             Log.Verbose("Informing user that offer was posted");
 
@@ -40,7 +40,16 @@ namespace WebsitePoller.Workflow
                 .Append("Number of rooms: ").AppendLine(offer.NumberOfRooms.ToString())
                 .ToString();
 
-            Notifier.Notify(message, new Uri(offer.Href));
+            var uri = domain;
+            try
+            {
+                uri = new Uri(domain, offer.Href);
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, e.Message);
+            }
+            Notifier.Notify(message, uri);
         }
     }
 }

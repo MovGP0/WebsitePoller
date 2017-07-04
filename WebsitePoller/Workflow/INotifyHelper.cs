@@ -6,6 +6,6 @@ namespace WebsitePoller.Workflow
     public interface INotifyHelper
     {
         void ShowNotificationThatWebsiteHasChanged(string message, Uri uri);
-        void ShowNotificationThatRegisteredForOffer(AltbauWohnungInfo offer);
+        void ShowNotificationThatRegisteredForOffer(AltbauWohnungInfo offer, Uri domain);
     }
 }

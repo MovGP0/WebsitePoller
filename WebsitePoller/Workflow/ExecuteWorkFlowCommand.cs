@@ -122,7 +122,7 @@ namespace WebsitePoller.Workflow
                 {
                     Log.Debug("Registering for offer", newOffer);
                     await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href, cancellationToken);
-                    NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer);
+                    NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer, domain);
                 }
 
                 Log.Debug("Saving lines in file.");
