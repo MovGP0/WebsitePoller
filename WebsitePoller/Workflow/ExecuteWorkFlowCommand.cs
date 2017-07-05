@@ -117,14 +117,12 @@ namespace WebsitePoller.Workflow
                 
                 Log.Debug($"Found {newOffers.Length} new and interesting offers.");
 
-                var domain = settings.Url.GetDomain();
-                foreach (var newOffer in newOffers)
+                if (!SettingsManager.IsFirstRun)
                 {
-                    Log.Debug("Registering for offer", newOffer);
-                    await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href, cancellationToken);
-                    NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer, domain);
+                    await RegisterForOffersAndInformUserAsync(settings, newOffers, cancellationToken);
+                    SettingsManager.IsFirstRun = false;
                 }
-
+                
                 Log.Debug("Saving lines in file.");
                 var lines = newOffers.Select(o => o.Href);
                 await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsFilePath, lines);
@@ -133,6 +131,18 @@ namespace WebsitePoller.Workflow
             }
 
             await webpage.SaveHtmlDocumentToFileWithLoggingAsync(targetPath, cancellationToken);
+        }
+
+        private async Task RegisterForOffersAndInformUserAsync(SettingsBase settings, IEnumerable<AltbauWohnungInfo> newOffers, CancellationToken cancellationToken)
+        {
+            var domain = settings.Url.GetDomain();
+            foreach (var newOffer in newOffers)
+            {
+                Log.Debug("Registering for offer", newOffer);
+                await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href,
+                    cancellationToken);
+                NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer, domain);
+            }
         }
 
         private Settings LoadSettings()
