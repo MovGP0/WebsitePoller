@@ -28,5 +28,7 @@ namespace WebsitePoller.Setting
                 }
             }
         }
+
+        public static bool IsFirstRun { get; set; }
     }
 }

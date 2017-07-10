@@ -55,6 +55,5 @@ namespace WebsitePoller.Entities
             return !(settings == other);
         }
         #endregion
-
     }
 }

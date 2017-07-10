@@ -3,6 +3,7 @@ using Serilog;
 using Topshelf;
 using JetBrains.Annotations;
 using Serilog.Events;
+using WebsitePoller.Setting;
 
 namespace WebsitePoller
 {
@@ -28,6 +29,7 @@ namespace WebsitePoller
                     var levels = LoggerHelper.GetLogLevels();
                     Log.Warning($"Could not switch to log level '{lvl}'. Possible values are {levels}.");
                 });
+                config.AddCommandLineSwitch("noinit", isSkipInit => SettingsManager.IsFirstRun = !isSkipInit);
                 config.SetDescription("Background service that polls websites for changes in the background.");
                 config.SetDisplayName("Website Poller");
                 config.SetServiceName(serviceName);
