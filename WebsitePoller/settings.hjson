@@ -40,7 +40,7 @@
 
   // Constrains on which flats to find.
   "maxEigenmittel": 22000.00, // number > 0
-  "maxMonatlicheKosten": 850.00, // number > 0
+  "maxMonatlicheKosten": 1000.00, // number > 0
   "minNumberOfRooms": 3, // integer > 0
 
   // List of all cities to search for.
