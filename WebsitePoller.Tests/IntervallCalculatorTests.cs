@@ -49,6 +49,30 @@ namespace WebsitePoller.Tests
                 var intervall = calculator.CalculateDurationTillIntervall();
                 Assert.That(intervall, Is.EqualTo(expected));
             }
+            
+            [Test]
+            [TestCase(23, 00, 00, 00)]
+            [TestCase(00, 01, 00, 00)]
+            [TestCase(01, 59, 00, 00)]
+            public void ShouldCalculateIntervallWhenTillIsAfterMidnignt(int currentHour, int currentMinute, int hours, int minutes)
+            {
+                var expected = Duration.FromHours(hours) + Duration.FromMinutes(minutes);
+                var settings = new Settings
+                {
+                    TimeZone = "Europe/Vienna",
+                    From = new LocalTime(23, 00),
+                    Till = new LocalTime(02, 00)
+                };
+                var time = new LocalDateTime(2017, 06, 23, currentHour, currentMinute);
+                var clock = CreateFakeClock(settings, time);
+
+                var settingsManager = An.SettingsManager();
+                settingsManager.Settings = settings;
+
+                var calculator = new IntervallCalculator(clock, settingsManager);
+                var intervall = calculator.CalculateDurationTillIntervall();
+                Assert.That(intervall, Is.EqualTo(expected));
+            }
 
             [Test]
             public void ShouldCalculateIntervallAtSummerToWinterChange()

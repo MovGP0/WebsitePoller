@@ -29,7 +29,7 @@ namespace WebsitePoller.Tests.Setting
                     Assert.That(s.Cities.Length, Is.EqualTo(1), nameof(s.Cities));
                     Assert.That(s.PollingIntervallInSeconds, Is.EqualTo(20), nameof(s.PollingIntervallInSeconds));
                     Assert.That(s.MaxEigenmittel, Is.EqualTo(22000.00m), nameof(s.MaxEigenmittel));
-                    Assert.That(s.MaxMonatlicheKosten, Is.EqualTo(850.00m), nameof(s.MaxMonatlicheKosten));
+                    Assert.That(s.MaxMonatlicheKosten, Is.EqualTo(1000.00m), nameof(s.MaxMonatlicheKosten));
                     Assert.That(s.MinNumberOfRooms, Is.EqualTo(3), nameof(s.MinNumberOfRooms));
 
                     var pa = s.PostalAddress;
