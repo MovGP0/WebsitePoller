@@ -51,9 +51,11 @@ namespace WebsitePoller.Tests
             }
             
             [Test]
-            [TestCase(23, 00, 00, 00)]
             [TestCase(00, 01, 00, 00)]
             [TestCase(01, 59, 00, 00)]
+            [TestCase(22, 00, 01, 00)]
+            [TestCase(22, 59, 00, 01)]
+            [TestCase(23, 00, 00, 00)]
             public void ShouldCalculateIntervallWhenTillIsAfterMidnignt(int currentHour, int currentMinute, int hours, int minutes)
             {
                 var expected = Duration.FromHours(hours) + Duration.FromMinutes(minutes);
@@ -73,7 +75,7 @@ namespace WebsitePoller.Tests
                 var intervall = calculator.CalculateDurationTillIntervall();
                 Assert.That(intervall, Is.EqualTo(expected));
             }
-
+            
             [Test]
             public void ShouldCalculateIntervallAtSummerToWinterChange()
             {

@@ -28,7 +28,12 @@ namespace WebsitePoller
             var maxTime = settings.Till;
 
             var currentTime = localInstant.TimeOfDay;
-            if (currentTime >= minTime && currentTime <= maxTime)
+            if (minTime < maxTime && currentTime >= minTime && currentTime <= maxTime)
+            {
+                return Duration.Zero;
+            }
+            
+            if (minTime > maxTime && (IsBetweenMinTimeAndMidnight(currentTime, minTime) || IsBetweenMidnightAndMaxTime(currentTime, maxTime)))
             {
                 return Duration.Zero;
             }
@@ -41,6 +46,16 @@ namespace WebsitePoller
             
             var nextMinInstant = GetTomorrowsMinInstant(localInstant, settings);
             return nextMinInstant - localInstant;
+        }
+
+        private static bool IsBetweenMidnightAndMaxTime(LocalTime currentTime, LocalTime maxTime)
+        {
+            return currentTime >= new LocalTime(00, 00) && currentTime <= maxTime;
+        }
+
+        private static bool IsBetweenMinTimeAndMidnight(LocalTime currentTime, LocalTime minTime)
+        {
+            return currentTime <= new LocalTime(23, 59, 59, 999) && currentTime >= minTime;
         }
 
         private static ZonedDateTime GetTomorrowsMinInstant(ZonedDateTime localInstant, Settings settings)
