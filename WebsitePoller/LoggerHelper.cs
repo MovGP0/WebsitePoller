@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Text;
 using JetBrains.Annotations;
 using Serilog;
@@ -11,9 +12,12 @@ namespace WebsitePoller
         [NotNull]
         public static ILogger SetupLogger(LogEventLevel level = LogEventLevel.Verbose)
         {
+            var instrumentionKey = ConfigurationManager.AppSettings["InstrumentationKey"];
+
             return new LoggerConfiguration()
                 .WriteTo.EventLog(Constants.ServiceName, Constants.LogName, Constants.MachineName, false, restrictedToMinimumLevel: LogEventLevel.Warning)
                 .WriteTo.LiterateConsole(level)
+                .WriteTo.ApplicationInsightsEvents(instrumentionKey, LogEventLevel.Information)
                 .CreateLogger();
         }
         
