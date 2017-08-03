@@ -17,7 +17,7 @@ namespace WebsitePoller
             return new LoggerConfiguration()
                 .WriteTo.EventLog(Constants.ServiceName, Constants.LogName, Constants.MachineName, false, restrictedToMinimumLevel: LogEventLevel.Warning)
                 .WriteTo.LiterateConsole(level)
-                .WriteTo.ApplicationInsightsEvents(instrumentionKey, LogEventLevel.Information)
+                .WriteTo.ApplicationInsightsEvents(instrumentionKey, LogEventLevel.Debug)
                 .CreateLogger();
         }
         
