@@ -88,7 +88,10 @@ namespace WebsitePoller.Workflow
             var targetPath = Path.Combine(FileHelper.GetApplicationDataPath(), "altbau.xhtml");
             
             var webpage = await WebsiteDownloader.GetWebsiteOrNullWithPolicyAndLoggingAsync(url, targetPath, cancellationToken);
-            if (webpage == null) return;
+            if (webpage == null)
+            {
+                return;
+            }
 
             if (File.Exists(targetPath))
             {
@@ -97,25 +100,25 @@ namespace WebsitePoller.Workflow
                 var areEqual = HtmlDocumentComparer.Equals(webpage, cachedWebpage);
                 if (areEqual)
                 {
-                    Log.Verbose("Website has not changed");
+                    Log.Information("Website has not changed");
                     return;
                 }
 
                 NotifyHelper.ShowNotificationThatWebsiteHasChanged("Website has changed", url);
 
-                Log.Debug("Parsing altbau wohnungen document.");
+                Log.Information("Parsing altbau wohnungen document.");
                 var offers = AltbauWohnungenParser.ParseAltbauWohnungenDocumentWithLogging(webpage).ToArray();
 
-                Log.Debug($"Found {offers.Length} offers.");
+                Log.Information($"Found {offers.Length} offers.");
 
                 var interestingOffers = AltbauWohnungenFilter.Filter(offers).ToArray();
 
-                Log.Debug($"Found {interestingOffers.Length} interesting offers.");
+                Log.Information($"Found {interestingOffers.Length} interesting offers.");
 
                 var postedHrefsFilePath = Path.Combine(FileHelper.GetApplicationDataPath(), "hrefs.txt");
                 var newOffers = interestingOffers.FilterNewOffers(postedHrefsFilePath).ToArray();
                 
-                Log.Debug($"Found {newOffers.Length} new and interesting offers.");
+                Log.Information($"Found {newOffers.Length} new and interesting offers.");
 
                 if (!SettingsManager.IsFirstRun)
                 {
@@ -123,7 +126,7 @@ namespace WebsitePoller.Workflow
                     SettingsManager.IsFirstRun = false;
                 }
                 
-                Log.Debug("Saving lines in file.");
+                Log.Information("Saving lines in file.");
                 var lines = newOffers.Select(o => o.Href);
                 await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsFilePath, lines);
                 
@@ -138,7 +141,7 @@ namespace WebsitePoller.Workflow
             var domain = settings.Url.GetDomain();
             foreach (var newOffer in newOffers)
             {
-                Log.Debug("Registering for offer", newOffer);
+                Log.Information("Registering for offer", newOffer);
                 await FormRegistrator.PostRegistrationWithPolicyAndLoggingAsync(domain, newOffer.Href,
                     cancellationToken);
                 NotifyHelper.ShowNotificationThatRegisteredForOffer(newOffer, domain);

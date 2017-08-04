@@ -35,7 +35,7 @@ namespace WebsitePoller.Workflow
 
             try
             {
-                Log.Verbose($"Downloading {url}");
+                Log.Information($"Downloading {url}");
                 return await GetWebsiteOrNullWithPolicyAsync(url, cancellationToken);
             }
             catch(Exception e)
