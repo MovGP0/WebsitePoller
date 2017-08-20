@@ -120,12 +120,12 @@ namespace WebsitePoller.Workflow
                 
                 Log.Information($"Found {newOffers.Length} new and interesting offers.");
 
-                if (!SettingsManager.IsFirstRun)
-                {
+                //if (!SettingsManager.IsFirstRun)
+                //{
                     await RegisterForOffersAndInformUserAsync(settings, newOffers, cancellationToken);
-                    SettingsManager.IsFirstRun = false;
-                }
-                
+                //}
+                //SettingsManager.IsFirstRun = false;
+
                 Log.Information("Saving lines in file.");
                 var lines = newOffers.Select(o => o.Href);
                 await FileHelper.CreateFileIfNotExistsAndAppendLinesToFileAsync(postedHrefsFilePath, lines);
